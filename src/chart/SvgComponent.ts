@@ -1,3 +1,4 @@
+// Renders interactive product building blocks loaded from supplied SVG assets.
 import * as d3 from "d3";
 import { CoordinateSystem } from "./CoordinateSystem";
 import { Tooltip } from "./Tooltip";

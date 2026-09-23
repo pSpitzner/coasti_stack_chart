@@ -1,3 +1,4 @@
+// Converts millimetre layout values into SVG coordinates and view boxes.
 export interface CoordinateDimensions {
     scale: number;
     padding: number;

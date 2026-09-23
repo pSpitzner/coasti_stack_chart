@@ -1,7 +1,8 @@
+// Coordinates and renders the complete Coasti architecture canvas.
 import * as d3 from "d3";
 import { CoordinateSystem, type CanvasLayout } from "./CoordinateSystem";
 import { SvgComponent } from "./SvgComponent";
-import { ServerComponent, type ServerAnchor } from "./ServerComponent";
+import { ArchitectureComponent, type ArchitectureComponentAnchor } from "./ArchitectureComponent";
 import { Tooltip } from "./Tooltip";
 import type { ComponentAnchor } from "../main";
 
@@ -10,7 +11,8 @@ export class CoastiCanvas {
     private readonly wrapper: HTMLElement;
     private readonly layout: CanvasLayout;
     private readonly components: ComponentAnchor[];
-    private readonly servers: ServerAnchor[];
+    private readonly servers: ArchitectureComponentAnchor[];
+    private readonly products: ArchitectureComponentAnchor[];
     private readonly padding: number;
 
     constructor(
@@ -18,12 +20,14 @@ export class CoastiCanvas {
         layout: CanvasLayout,
         dimensions: { scale: number; padding: number },
         components: ComponentAnchor[],
-        servers: ServerAnchor[],
+        servers: ArchitectureComponentAnchor[],
+        products: ArchitectureComponentAnchor[],
     ) {
         this.wrapper = wrapper;
         this.layout = layout;
         this.components = components;
         this.servers = servers;
+        this.products = products;
         this.padding = dimensions.padding;
         this.coordinates = new CoordinateSystem(dimensions);
     }
@@ -54,10 +58,24 @@ export class CoastiCanvas {
                 anchor.tooltipText,
             ).render();
         });
-        const serverLayer = svg.append("g").attr("class", "server-layer");
+        const serverLayer = svg
+            .append("g")
+            .attr("class", "architecture-component-layer server-layer");
         this.servers.forEach((anchor) => {
-            new ServerComponent(
+            new ArchitectureComponent(
                 serverLayer,
+                anchor,
+                this.coordinates,
+                tooltip,
+                componentLayer,
+            ).render();
+        });
+        const productLayer = svg
+            .append("g")
+            .attr("class", "architecture-component-layer product-layer");
+        this.products.forEach((anchor) => {
+            new ArchitectureComponent(
+                productLayer,
                 anchor,
                 this.coordinates,
                 tooltip,

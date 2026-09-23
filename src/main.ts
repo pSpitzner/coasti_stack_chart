@@ -1,6 +1,7 @@
+// Defines the chart layout, architecture data, and public mount API.
 import "./style.css";
 import { CoastiCanvas } from "./chart/CoastiCanvas";
-import type { ServerAnchor } from "./chart/ServerComponent";
+import type { ArchitectureComponentAnchor } from "./chart/ArchitectureComponent";
 
 type Millimetres = number;
 
@@ -40,17 +41,15 @@ export const layout = {
     serverGap: 14,
     stackOffset: 58 + 14,
     stackWidth: dimensions.columnWidth * 3 + dimensions.largeGap * 2,
+    stackHeight: 137,
+    productGap: 10,
+    productHeight: 24,
     canvasWidth:
         58 +
         14 +
         dimensions.columnWidth * 3 +
         dimensions.largeGap * 2,
-    canvasHeight:
-        dimensions.frontendHeight +
-        dimensions.rowGap +
-        dimensions.transformationHeight +
-        dimensions.rowGap +
-        dimensions.sourceHeight,
+    canvasHeight: 137 + 10 + 24,
     columns: {
         first: 58 + 14,
         center: 58 + 14 + dimensions.columnWidth + dimensions.largeGap,
@@ -192,7 +191,7 @@ export const components: ComponentAnchor[] = [
     },
 ];
 
-export const servers: ServerAnchor[] = [
+export const servers: ArchitectureComponentAnchor[] = [
     {
         id: "frontend-server",
         iconId: "server-logo",
@@ -241,6 +240,52 @@ export const servers: ServerAnchor[] = [
     },
 ];
 
+export const products: ArchitectureComponentAnchor[] = [
+    {
+        id: "first-product",
+        iconId: "box",
+        text: "",
+        tooltipHeading: "Product Column",
+        tooltipText:
+            "A product combines the data and frontend building blocks for one reporting use case.",
+        componentIds: ["content_paket_with_text", "vorsystem_with_text"],
+        x: layout.columns.first + 24,
+        y: layout.stackHeight + layout.productGap,
+    },
+    {
+        id: "coasti-products",
+        iconId: "box",
+        text: "coasti products",
+        tooltipHeading: "Coasti Products",
+        tooltipText:
+            "Coasti products package reusable data, transformation, orchestration, and frontend components.",
+        componentIds: [
+            "cp_frontend_content",
+            "cp_orchestration",
+            "cp_transformation",
+            "cp_ingestion",
+            "cp_storage",
+            "fachverfahren",
+            "fachverfahren_storage",
+        ],
+        x: layout.columns.center + 24,
+        y: layout.stackHeight + layout.productGap,
+        textPosition: "below",
+        textAlign: "center",
+    },
+    {
+        id: "third-product",
+        iconId: "box",
+        text: "",
+        tooltipHeading: "Product Column",
+        tooltipText:
+            "A product combines the data and frontend building blocks for one reporting use case.",
+        componentIds: ["content_paket_wo_text", "vorsystem_wo_text"],
+        x: layout.columns.third + 24,
+        y: layout.stackHeight + layout.productGap,
+    },
+];
+
 export function mount(target: string | HTMLElement) {
     const wrapper =
         typeof target === "string"
@@ -249,7 +294,7 @@ export function mount(target: string | HTMLElement) {
     if (!wrapper)
         throw new Error(`Coasti Stack mount target not found: ${String(target)}`);
     wrapper.replaceChildren();
-    new CoastiCanvas(wrapper, layout, dimensions, components, servers).render();
+    new CoastiCanvas(wrapper, layout, dimensions, components, servers, products).render();
 }
 
 declare global {

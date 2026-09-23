@@ -13,25 +13,25 @@ body { margin: 0; min-width: 320px; }
   display: block;
   transition: x .36s ease, y .36s ease, width .36s ease, height .36s ease;
 }
-.server-component-text {
+.architecture-component-text {
   fill: #0e4d62;
   font-family: Arial, sans-serif;
-  font-size: var(--server-text-size);
+  font-size: var(--architecture-text-size);
   font-weight: 700;
 }
-.server-component {
+.architecture-component {
   cursor: pointer;
   transform-box: fill-box;
   transform-origin: center;
   transition: transform .36s ease, filter .36s ease;
 }
-.server-component.is-hovered {
+.architecture-component.is-hovered {
   transform: scale(1.06);
 }
-.server-component-hit-area {
+.architecture-component-hit-area {
   pointer-events: all;
 }
-.server-component[data-server="source-server"] .server-component-text {
+.architecture-component[data-architecture-component="source-server"] .architecture-component-text {
   fill: #808080;
 }
 
@@ -49,13 +49,13 @@ body { margin: 0; min-width: 320px; }
 .component-layer.has-hovered .component:not(.is-hovered) {
   filter: blur(1.5px);
 }
-.component-layer.has-server-hovered .component:not(.is-server-linked) {
+.component-layer.has-architecture-hovered .component:not(.is-architecture-linked) {
   filter: blur(2.5px);
 }
-.server-layer.has-server-hovered .server-component:not(.is-hovered) {
+.architecture-component-layer.has-architecture-hovered .architecture-component:not(.is-hovered) {
   filter: blur(2.5px);
 }
-.component.is-server-linked {
+.component.is-architecture-linked {
   --component-hover-padding: var(--secondary-hover-padding);
   filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .16));
 }
@@ -66,7 +66,7 @@ body { margin: 0; min-width: 320px; }
   filter: drop-shadow(0 5px 7px rgba(0, 0, 0, .28));
 }
 .component.is-hovered .component-image,
-.component.is-server-linked .component-image {
+.component.is-architecture-linked .component-image {
   x: calc(var(--component-hover-padding) * -1);
   y: calc(var(--component-hover-padding) * -1);
   width: calc(var(--component-width) + var(--component-hover-padding) + var(--component-hover-padding));

@@ -1,3 +1,4 @@
+// Creates and positions the shared HTML tooltip used by chart elements.
 export class Tooltip {
     private readonly element: HTMLDivElement;
 

@@ -1,3 +1,4 @@
+// Renders interactive architecture icons, labels, tooltips, and linked component highlighting.
 import * as d3 from "d3";
 import { CoordinateSystem } from "./CoordinateSystem";
 import { Tooltip } from "./Tooltip";
@@ -8,10 +9,10 @@ const iconFiles = import.meta.glob("../../icons/*.svg", {
     query: "?url",
 }) as Record<string, string>;
 
-export type ServerTextPosition = "left" | "right" | "above" | "below";
-export type ServerTextAlign = "left" | "center" | "right";
+export type ArchitectureTextPosition = "left" | "right" | "above" | "below";
+export type ArchitectureTextAlign = "left" | "center" | "right";
 
-export interface ServerAnchor {
+export interface ArchitectureComponentAnchor {
     id: string;
     iconId: string;
     text: string;
@@ -22,16 +23,16 @@ export interface ServerAnchor {
     y: number;
     iconWidth?: number;
     iconHeight?: number;
-    textPosition?: ServerTextPosition;
-    textAlign?: ServerTextAlign;
+    textPosition?: ArchitectureTextPosition;
+    textAlign?: ArchitectureTextAlign;
     textGap?: number;
 }
 
-const defaultServerOptions = {
+const defaultArchitectureOptions = {
     iconWidth: 17,
     iconHeight: 12,
-    textPosition: "left" as ServerTextPosition,
-    textAlign: "right" as ServerTextAlign,
+    textPosition: "left" as ArchitectureTextPosition,
+    textAlign: "right" as ArchitectureTextAlign,
     textGap: 4,
 };
 
@@ -41,22 +42,22 @@ function sourceFor(iconId: string): string {
     );
 
     if (!filePath) {
-        throw new Error(`No server icon found for ${iconId}.svg`);
+        throw new Error(`No architecture icon found for ${iconId}.svg`);
     }
 
     return iconFiles[filePath];
 }
 
-export class ServerComponent {
+export class ArchitectureComponent {
     private readonly group: d3.Selection<SVGGElement, unknown, null, undefined>;
-    private readonly anchor: ServerAnchor;
+    private readonly anchor: ArchitectureComponentAnchor;
     private readonly coordinates: CoordinateSystem;
     private readonly tooltip: Tooltip;
     private readonly componentLayer: d3.Selection<SVGGElement, unknown, null, undefined>;
 
     constructor(
         layer: d3.Selection<SVGGElement, unknown, null, undefined>,
-        anchor: ServerAnchor,
+        anchor: ArchitectureComponentAnchor,
         coordinates: CoordinateSystem,
         tooltip: Tooltip,
         componentLayer: d3.Selection<SVGGElement, unknown, null, undefined>,
@@ -72,20 +73,20 @@ export class ServerComponent {
         const x = this.coordinates.toSvgPosition(this.anchor.x);
         const y = this.coordinates.toSvgPosition(this.anchor.y);
         const iconWidth = this.coordinates.toSvgUnits(
-            this.anchor.iconWidth ?? defaultServerOptions.iconWidth,
+            this.anchor.iconWidth ?? defaultArchitectureOptions.iconWidth,
         );
         const iconHeight = this.coordinates.toSvgUnits(
-            this.anchor.iconHeight ?? defaultServerOptions.iconHeight,
+            this.anchor.iconHeight ?? defaultArchitectureOptions.iconHeight,
         );
         const textGap = this.coordinates.toSvgUnits(
-            this.anchor.textGap ?? defaultServerOptions.textGap,
+            this.anchor.textGap ?? defaultArchitectureOptions.textGap,
         );
         const iconCenterX = x + iconWidth / 2;
         const iconCenterY = y + iconHeight / 2;
         const text = this.group
             .append("text")
-            .attr("class", "server-component-text")
-            .style("--server-text-size", "18px");
+            .attr("class", "architecture-component-text")
+            .style("--architecture-text-size", "18px");
 
         const textLines = this.anchor.text.split(/<br\s*\/?\s*>/i);
         textLines.forEach((line, index) => {
@@ -95,14 +96,14 @@ export class ServerComponent {
         });
 
         this.group
-            .attr("class", "server-component")
-            .attr("data-server", this.anchor.id)
+            .attr("class", "architecture-component")
+            .attr("data-architecture-component", this.anchor.id)
             .attr("role", "group")
             .attr("aria-label", this.anchor.text);
 
         this.group
             .append("image")
-            .attr("class", "server-component-icon")
+            .attr("class", "architecture-component-icon")
             .attr("href", sourceFor(this.anchor.iconId))
             .attr("x", x)
             .attr("y", y)
@@ -112,10 +113,10 @@ export class ServerComponent {
             .attr("role", "img")
             .attr("aria-label", `${this.anchor.text} icon`);
 
-        switch (this.anchor.textPosition ?? defaultServerOptions.textPosition) {
+        switch (this.anchor.textPosition ?? defaultArchitectureOptions.textPosition) {
             case "left":
                 text.attr("x", x - textGap).attr("y", iconCenterY)
-                    .attr("text-anchor", textAnchor(this.anchor.textAlign ?? defaultServerOptions.textAlign))
+                    .attr("text-anchor", textAnchor(this.anchor.textAlign ?? defaultArchitectureOptions.textAlign))
                     .attr("dominant-baseline", "middle");
                 text.selectAll("tspan").attr("dy", (_, index) =>
                     index === 0 ? "-0.6em" : "1.2em",
@@ -141,13 +142,13 @@ export class ServerComponent {
                 break;
         }
 
-            text.selectAll("tspan").attr("x", text.attr("x"));
+        text.selectAll("tspan").attr("x", text.attr("x"));
 
         const bounds = this.group.node()?.getBBox();
         if (bounds) {
             this.group
                 .append("rect")
-                .attr("class", "server-component-hit-area")
+                .attr("class", "architecture-component-hit-area")
                 .attr("x", bounds.x - 2)
                 .attr("y", bounds.y - 2)
                 .attr("width", bounds.width + 4)
@@ -155,54 +156,54 @@ export class ServerComponent {
                 .attr("fill", "transparent");
         }
 
-            const setHovered = (hovered: boolean, event?: PointerEvent) => {
-                this.group.classed("is-hovered", hovered);
-                const serverLayer = this.group.node()?.parentElement;
-                if (serverLayer) {
-                    d3.select(serverLayer).classed("has-server-hovered", hovered);
+        const setHovered = (hovered: boolean, event?: PointerEvent) => {
+            this.group.classed("is-hovered", hovered);
+            const architectureLayer = this.group.node()?.parentElement;
+            if (architectureLayer) {
+                d3.select(architectureLayer).classed("has-architecture-hovered", hovered);
+            }
+            this.componentLayer.classed("has-architecture-hovered", hovered);
+            const linkedComponentIds = this.anchor.componentIds;
+            this.componentLayer
+                .selectAll<SVGGElement, unknown>(".component")
+                .classed("is-architecture-linked", function () {
+                    return hovered && linkedComponentIds.includes(
+                        this.getAttribute("data-component") ?? "",
+                    );
+                });
+            if (hovered) {
+                if (event) {
+                    this.tooltip.show(
+                        this.anchor.tooltipHeading,
+                        this.anchor.tooltipText,
+                        event,
+                        -140,
+                        28,
+                    );
+                } else if (this.group.node()) {
+                    this.tooltip.showForElement(
+                        this.anchor.tooltipHeading,
+                        this.anchor.tooltipText,
+                        this.group.node()!,
+                    );
                 }
-                this.componentLayer.classed("has-server-hovered", hovered);
-                const linkedComponentIds = this.anchor.componentIds;
-                this.componentLayer
-                    .selectAll<SVGGElement, unknown>(".component")
-                    .classed("is-server-linked", function () {
-                        return hovered && linkedComponentIds.includes(
-                            this.getAttribute("data-component") ?? "",
-                        );
-                    });
-                if (hovered) {
-                    if (event) {
-                        this.tooltip.show(
-                            this.anchor.tooltipHeading,
-                            this.anchor.tooltipText,
-                            event,
-                            -140,
-                            28,
-                        );
-                    } else if (this.group.node()) {
-                        this.tooltip.showForElement(
-                            this.anchor.tooltipHeading,
-                            this.anchor.tooltipText,
-                            this.group.node()!,
-                        );
-                    }
-                } else {
-                    this.tooltip.hide();
-                }
-            };
+            } else {
+                this.tooltip.hide();
+            }
+        };
 
-            this.group
-                .on("pointerenter", (event) => setHovered(true, event))
-                .on("pointermove", (event) => setHovered(true, event))
-                .on("pointerleave", () => setHovered(false))
-                .on("focus", () => setHovered(true))
-                .on("blur", () => setHovered(false));
+        this.group
+            .on("pointerenter", (event) => setHovered(true, event))
+            .on("pointermove", (event) => setHovered(true, event))
+            .on("pointerleave", () => setHovered(false))
+            .on("focus", () => setHovered(true))
+            .on("blur", () => setHovered(false));
 
         return this;
     }
 }
 
-function textAnchor(alignment: ServerTextAlign): "start" | "middle" | "end" {
+function textAnchor(alignment: ArchitectureTextAlign): "start" | "middle" | "end" {
     return alignment === "left"
         ? "start"
         : alignment === "right"
