@@ -23,7 +23,7 @@ body { margin: 0; min-width: 320px; }
   cursor: pointer;
   transform-box: fill-box;
   transform-origin: center;
-  transition: transform .36s ease;
+  transition: transform .36s ease, filter .36s ease;
 }
 .server-component.is-hovered {
   transform: scale(1.06);
@@ -50,10 +50,14 @@ body { margin: 0; min-width: 320px; }
   filter: blur(1.5px);
 }
 .component-layer.has-server-hovered .component:not(.is-server-linked) {
-  filter: blur(1.5px);
+  filter: blur(2.5px);
+}
+.server-layer.has-server-hovered .server-component:not(.is-hovered) {
+  filter: blur(2.5px);
 }
 .component.is-server-linked {
   --component-hover-padding: var(--secondary-hover-padding);
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .16));
 }
 .component.is-hovered {
   --component-hover-padding: var(--primary-hover-padding);

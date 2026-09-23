@@ -8,10 +8,16 @@ export class Tooltip {
         wrapper.appendChild(this.element);
     }
 
-    show(heading: string, text: string, event: PointerEvent): void {
+    show(
+        heading: string,
+        text: string,
+        event: PointerEvent,
+        offsetX = 14,
+        offsetY = 14,
+    ): void {
         this.element.innerHTML = `<strong>${heading}</strong><span>${text}</span>`;
-        this.element.style.left = `${event.clientX + 14}px`;
-        this.element.style.top = `${event.clientY + 14}px`;
+        this.element.style.left = `${event.clientX + offsetX}px`;
+        this.element.style.top = `${event.clientY + offsetY}px`;
         this.element.classList.add("is-visible");
     }
 

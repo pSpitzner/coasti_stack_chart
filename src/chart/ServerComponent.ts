@@ -157,6 +157,10 @@ export class ServerComponent {
 
             const setHovered = (hovered: boolean, event?: PointerEvent) => {
                 this.group.classed("is-hovered", hovered);
+                const serverLayer = this.group.node()?.parentElement;
+                if (serverLayer) {
+                    d3.select(serverLayer).classed("has-server-hovered", hovered);
+                }
                 this.componentLayer.classed("has-server-hovered", hovered);
                 const linkedComponentIds = this.anchor.componentIds;
                 this.componentLayer
@@ -172,6 +176,8 @@ export class ServerComponent {
                             this.anchor.tooltipHeading,
                             this.anchor.tooltipText,
                             event,
+                            -140,
+                            28,
                         );
                     } else if (this.group.node()) {
                         this.tooltip.showForElement(

@@ -75,7 +75,13 @@ export class SvgComponent {
             this.group.classed("is-hovered", hovered);
             this.layer.classed("has-hovered", hovered);
             if (hovered) {
-                if (event) this.tooltip.show(this.tooltipHeading, this.tooltipText, event);
+                if (event) this.tooltip.show(
+                    this.tooltipHeading,
+                    this.tooltipText,
+                    event,
+                    -20,
+                    28,
+                );
                 else if (this.group.node()) this.tooltip.showForElement(this.tooltipHeading, this.tooltipText, this.group.node()!);
             } else {
                 this.tooltip.hide();
