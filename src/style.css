@@ -8,12 +8,39 @@ body { margin: 0; min-width: 320px; }
 #app { width: min(100%, 1120px); margin: 0 auto; padding: 24px; }
 .chart-wrapper { position: relative; }
 .coasti-canvas { display: block; width: 100%; height: auto; overflow: visible; }
-.canvas-background { fill: #0f586b; }
-.component-image { display: block; }
+.canvas-background { fill: #abbfc4; }
+.component-image {
+  display: block;
+  transition: x .36s ease, y .36s ease, width .36s ease, height .36s ease;
+}
+.server-component-text {
+  fill: #0e4d62;
+  font-family: Arial, sans-serif;
+  font-size: var(--server-text-size);
+  font-weight: 700;
+}
+.server-component {
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform .36s ease;
+}
+.server-component.is-hovered {
+  transform: scale(1.06);
+}
+.server-component-hit-area {
+  pointer-events: all;
+}
+.server-component[data-server="source-server"] .server-component-text {
+  fill: #808080;
+}
 
 /* base hover effects */
 .component {
   cursor: pointer;
+  --primary-hover-padding: 4px;
+  --secondary-hover-padding: 2px;
+  --component-hover-padding: 0px;
   transform-box: fill-box;
   transform-origin: center;
   transform: translate(var(--component-x), var(--component-y));
@@ -22,9 +49,24 @@ body { margin: 0; min-width: 320px; }
 .component-layer.has-hovered .component:not(.is-hovered) {
   filter: blur(1.5px);
 }
+.component-layer.has-server-hovered .component:not(.is-server-linked) {
+  filter: blur(1.5px);
+}
+.component.is-server-linked {
+  --component-hover-padding: var(--secondary-hover-padding);
+}
+.component.is-hovered {
+  --component-hover-padding: var(--primary-hover-padding);
+}
 .component.is-hovered {
   filter: drop-shadow(0 5px 7px rgba(0, 0, 0, .28));
-  transform: translate(var(--component-x), var(--component-y)) scale(1.06);
+}
+.component.is-hovered .component-image,
+.component.is-server-linked .component-image {
+  x: calc(var(--component-hover-padding) * -1);
+  y: calc(var(--component-hover-padding) * -1);
+  width: calc(var(--component-width) + var(--component-hover-padding) + var(--component-hover-padding));
+  height: calc(var(--component-height) + var(--component-hover-padding) + var(--component-hover-padding));
 }
 .component-tooltip {
   position: fixed;

@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { CoordinateSystem, type CanvasLayout } from "./CoordinateSystem";
 import { SvgComponent } from "./SvgComponent";
+import { ServerComponent, type ServerAnchor } from "./ServerComponent";
 import { Tooltip } from "./Tooltip";
 import type { ComponentAnchor } from "../main";
 
@@ -9,6 +10,7 @@ export class CoastiCanvas {
     private readonly wrapper: HTMLElement;
     private readonly layout: CanvasLayout;
     private readonly components: ComponentAnchor[];
+    private readonly servers: ServerAnchor[];
     private readonly padding: number;
 
     constructor(
@@ -16,10 +18,12 @@ export class CoastiCanvas {
         layout: CanvasLayout,
         dimensions: { scale: number; padding: number },
         components: ComponentAnchor[],
+        servers: ServerAnchor[],
     ) {
         this.wrapper = wrapper;
         this.layout = layout;
         this.components = components;
+        this.servers = servers;
         this.padding = dimensions.padding;
         this.coordinates = new CoordinateSystem(dimensions);
     }
@@ -48,6 +52,16 @@ export class CoastiCanvas {
                 tooltip,
                 anchor.tooltipHeading,
                 anchor.tooltipText,
+            ).render();
+        });
+        const serverLayer = svg.append("g").attr("class", "server-layer");
+        this.servers.forEach((anchor) => {
+            new ServerComponent(
+                serverLayer,
+                anchor,
+                this.coordinates,
+                tooltip,
+                componentLayer,
             ).render();
         });
 

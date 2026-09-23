@@ -57,7 +57,9 @@ export class SvgComponent {
             .attr("class", "component")
             .attr("data-component", this.anchor.id)
             .style("--component-x", `${x}px`)
-            .style("--component-y", `${y}px`);
+            .style("--component-y", `${y}px`)
+            .style("--component-width", `${width}px`)
+            .style("--component-height", `${height}px`);
 
         this.group
             .append("image")
