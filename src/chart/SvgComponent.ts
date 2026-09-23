@@ -22,6 +22,7 @@ function sourceFor(componentId: string): string {
 
 export class SvgComponent {
     private readonly group: d3.Selection<SVGGElement, unknown, null, undefined>;
+    private readonly layer: d3.Selection<SVGGElement, unknown, null, undefined>;
     private readonly anchor: ComponentAnchor;
     private readonly coordinates: CoordinateSystem;
 
@@ -32,6 +33,7 @@ export class SvgComponent {
     ) {
         this.anchor = anchor;
         this.coordinates = coordinates;
+        this.layer = layer;
         this.group = layer.append("g");
     }
 
@@ -44,7 +46,8 @@ export class SvgComponent {
         this.group
             .attr("class", "component")
             .attr("data-component", this.anchor.id)
-            .attr("transform", `translate(${x}, ${y})`);
+            .style("--component-x", `${x}px`)
+            .style("--component-y", `${y}px`);
 
         this.group
             .append("image")
@@ -55,6 +58,17 @@ export class SvgComponent {
             .attr("preserveAspectRatio", "xMidYMid meet")
             .attr("role", "img")
             .attr("aria-label", this.anchor.id);
+
+        const setHovered = (hovered: boolean) => {
+            this.group.classed("is-hovered", hovered);
+            this.layer.classed("has-hovered", hovered);
+        };
+
+        this.group
+            .on("pointerenter", () => setHovered(true))
+            .on("pointerleave", () => setHovered(false))
+            .on("focus", () => setHovered(true))
+            .on("blur", () => setHovered(false));
 
         return this;
     }

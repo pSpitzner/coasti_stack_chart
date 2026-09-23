@@ -10,6 +10,22 @@ body { margin: 0; min-width: 320px; }
 .canvas-background { fill: #0f586b; }
 .component-image { display: block; }
 
+/* base hover effects */
+.component {
+  cursor: pointer;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: translate(var(--component-x), var(--component-y));
+  transition: opacity .36s ease, filter .36s ease, transform .36s ease;
+}
+.component-layer.has-hovered .component:not(.is-hovered) {
+  filter: blur(1.5px);
+}
+.component.is-hovered {
+  filter: drop-shadow(0 5px 7px rgba(0, 0, 0, .28));
+  transform: translate(var(--component-x), var(--component-y)) scale(1.06);
+}
+
 @media (max-width: 700px) {
   #app { min-width: 760px; }
   body { overflow-x: auto; }
