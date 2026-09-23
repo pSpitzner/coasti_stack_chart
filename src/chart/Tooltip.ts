@@ -2,11 +2,13 @@
 export class Tooltip {
     private readonly element: HTMLDivElement;
 
-    constructor(wrapper: HTMLElement) {
+    constructor() {
         this.element = document.createElement("div");
         this.element.className = "component-tooltip";
         this.element.setAttribute("role", "tooltip");
-        wrapper.appendChild(this.element);
+        // Keep the tooltip outside transformed chart and slide containers so
+        // viewport pointer coordinates remain in the same coordinate system.
+        document.body.appendChild(this.element);
     }
 
     show(

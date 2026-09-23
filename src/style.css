@@ -1,4 +1,9 @@
 :root {
+    --coasti-primary-blur: 1.5px;
+    --coasti-secondary-blur: 2.5px;
+    --coasti-primary-hover-padding: 4px;
+    --coasti-secondary-hover-padding: 2px;
+    --coasti-transition-duration: 0.36s;
     font-family:
         Inter,
         ui-sans-serif,
@@ -39,7 +44,8 @@ body {
 
 /* Canvas backgrounds */
 .canvas-background {
-    fill: #abbfc4;
+    /* fill: #abbfc4; */
+    fill: transparent
 }
 
 .matrix-background {
@@ -54,8 +60,8 @@ body {
         rotateX(calc(var(--logo-rotate-x) * 0.15))
         rotateY(calc(var(--logo-rotate-y) * 0.15));
     transition:
-        transform 0.36s ease,
-        filter 0.36s ease;
+        transform var(--coasti-transition-duration) ease,
+        filter var(--coasti-transition-duration) ease;
 }
 
 .matrix-background.is-logo-hovered {
@@ -71,8 +77,8 @@ body {
         perspective(700px) rotateX(var(--logo-rotate-x))
         rotateY(var(--logo-rotate-y)) scale(1.00);
     transition:
-        transform 0.36s ease,
-        filter 0.36s ease;
+        transform var(--coasti-transition-duration) ease,
+        filter var(--coasti-transition-duration) ease;
 }
 
 .logo-component.is-hovered {
@@ -84,12 +90,12 @@ body {
 }
 
 .coasti-canvas.has-logo-hovered .architecture-component {
-    filter: blur(2.5px);
+    filter: blur(var(--coasti-secondary-blur));
 }
 
 .coasti-canvas.has-hovered .logo-component,
 .coasti-canvas.has-architecture-hovered .logo-component {
-    filter: blur(2.5px);
+    filter: blur(var(--coasti-secondary-blur));
 }
 
 .coasti-logo {
@@ -102,8 +108,8 @@ body {
     transform-box: fill-box;
     transform-origin: center;
     transition:
-        transform 0.36s ease,
-        filter 0.36s ease;
+        transform var(--coasti-transition-duration) ease,
+        filter var(--coasti-transition-duration) ease;
 }
 
 .architecture-component.is-hovered {
@@ -116,7 +122,7 @@ body {
 
 .coasti-canvas.has-hovered .matrix-background,
 .coasti-canvas.has-architecture-hovered .matrix-background {
-    filter: blur(2.5px);
+    filter: blur(var(--coasti-secondary-blur));
 }
 
 .architecture-component-text {
@@ -134,46 +140,46 @@ body {
 /* Inner matrix components and their hover relationships */
 .component {
     cursor: pointer;
-    --primary-hover-padding: 4px;
-    --secondary-hover-padding: 2px;
+    --primary-hover-padding: var(--coasti-primary-hover-padding);
+    --secondary-hover-padding: var(--coasti-secondary-hover-padding);
     --component-hover-padding: 0px;
     transform-box: fill-box;
     transform-origin: center;
     transform: translate(var(--component-x), var(--component-y));
     transition:
-        opacity 0.36s ease,
-        filter 0.36s ease,
-        transform 0.36s ease;
+        opacity var(--coasti-transition-duration) ease,
+        filter var(--coasti-transition-duration) ease,
+        transform var(--coasti-transition-duration) ease;
 }
 
 .component-image {
     display: block;
     transition:
-        x 0.36s ease,
-        y 0.36s ease,
-        width 0.36s ease,
-        height 0.36s ease;
+        x var(--coasti-transition-duration) ease,
+        y var(--coasti-transition-duration) ease,
+        width var(--coasti-transition-duration) ease,
+        height var(--coasti-transition-duration) ease;
 }
 
 .component-layer.has-hovered .component:not(.is-hovered) {
-    filter: blur(1.5px);
+    filter: blur(var(--coasti-primary-blur));
 }
 
 .component-layer.has-architecture-hovered .component:not(.is-architecture-linked) {
-    filter: blur(2.5px);
+    filter: blur(var(--coasti-secondary-blur));
 }
 
 .architecture-component-layer.has-architecture-hovered
     .architecture-component:not(.is-hovered) {
-    filter: blur(2.5px);
+    filter: blur(var(--coasti-secondary-blur));
 }
 
 .coasti-canvas.has-architecture-hovered .architecture-component:not(.is-hovered) {
-    filter: blur(2.5px);
+    filter: blur(var(--coasti-secondary-blur));
 }
 
 .coasti-canvas.has-component-hovered .architecture-component {
-    filter: blur(2.5px);
+    filter: blur(var(--coasti-secondary-blur));
 }
 
 .component.is-architecture-linked {
@@ -215,12 +221,12 @@ body {
     color: #fff;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.36s ease-out;
+    transition: opacity var(--coasti-transition-duration) ease-out;
 }
 
 .component-tooltip.is-visible {
     opacity: 1;
-    transition: opacity 0.36s ease-in-out;
+    transition: opacity var(--coasti-transition-duration) ease-in-out;
 }
 
 .component-tooltip strong {

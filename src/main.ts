@@ -317,5 +317,3 @@ declare global {
 }
 
 window.CoastiStack = { mount };
-const app = document.querySelector<HTMLElement>("#app");
-if (app) mount(app);

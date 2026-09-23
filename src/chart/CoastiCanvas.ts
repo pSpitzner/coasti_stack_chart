@@ -55,7 +55,7 @@ export class CoastiCanvas {
                 this.padding.top + this.padding.bottom,
             ));
 
-        const tooltip = new Tooltip(this.wrapper);
+        const tooltip = new Tooltip();
         if (this.logoConfiguration) {
             new LogoComponent(
                 svg.append("g").attr("class", "logo-layer"),

@@ -62,6 +62,112 @@ onMounted(() => {
 The module imports the chart stylesheet automatically. Use a unique element id
 if more than one chart is present in the presentation.
 
+### Embedding from a local folder in Slidev
+
+The chart can be imported directly from a local checkout. This keeps the
+repository private and avoids committing the chart's `dist/` directory.
+
+In the Slidev project's `vite.config.ts`, create an alias for the chart's
+source entry point. Adjust the path to match the location of your checkout:
+
+```ts
+import { defineConfig } from "vite";
+import { fileURLToPath, URL } from "node:url";
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      "@coasti-stack": fileURLToPath(
+        new URL(
+          "/Users/paul/para/3_Areas/lf_repos.nosync/coasti_stack_chart/src/index.ts",
+          import.meta.url,
+        ),
+      ),
+    },
+  },
+  server: {
+    fs: {
+      allow: [
+        "/Users/paul/para/3_Areas/lf_repos.nosync/coasti_stack_chart",
+      ],
+    },
+  },
+});
+```
+
+Create `components/CoastiStack.vue` in the Slidev project:
+
+```vue
+<script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import { mount } from "@coasti-stack";
+
+const props = withDefaults(
+  defineProps<{
+    width?: string;
+    height?: string;
+  }>(),
+  {
+    width: "100%",
+    height: "58vh",
+  },
+);
+
+const chartElement = ref<HTMLElement | null>(null);
+
+onMounted(() => {
+  if (chartElement.value) {
+    mount(chartElement.value);
+  }
+});
+
+onBeforeUnmount(() => {
+  chartElement.value?.replaceChildren();
+});
+</script>
+
+<template>
+  <div
+    ref="chartElement"
+    class="coasti-stack-chart"
+    :style="{ width: props.width, height: props.height }"
+  />
+</template>
+
+<style scoped>
+.coasti-stack-chart {
+  position: relative;
+  overflow: hidden;
+}
+
+.coasti-stack-chart :deep(.coasti-canvas) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+
+  /* Optional tuning for the presentation. */
+  --coasti-primary-blur: 1px;
+  --coasti-secondary-blur: 2px;
+  --coasti-primary-hover-padding: 6px;
+  --coasti-secondary-hover-padding: 3px;
+  --coasti-transition-duration: 0.5s;
+}
+</style>
+```
+
+Use the component in a slide:
+
+```md
+<CoastiStack height="58vh" />
+```
+
+The public module entry point is `src/index.ts`. It imports the SVG assets and
+stylesheet through Vite, so all hover behavior, tooltips, blur relationships,
+and logo interactions are bundled into the Slidev presentation at build time.
+No GitHub access, public repository, or committed `dist/` directory is needed.
+
 The compiled JavaScript exposes a global mount function. Host the contents of `dist/` on a static site, then add a wrapper element and load the generated JavaScript module:
 
 ```html
