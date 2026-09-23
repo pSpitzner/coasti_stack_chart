@@ -5,6 +5,7 @@ import { SvgComponent, type ComponentAnchor } from "./SvgComponent";
 import { ArchitectureComponent, type ArchitectureComponentAnchor } from "./ArchitectureComponent";
 import { LogoComponent, type LogoConfiguration } from "./LogoComponent";
 import { Tooltip } from "./Tooltip";
+import { FlowParticles, type FlowSegment } from "./FlowParticles";
 
 export class CoastiCanvas {
     private readonly coordinates: CoordinateSystem;
@@ -14,6 +15,7 @@ export class CoastiCanvas {
     private readonly servers: ArchitectureComponentAnchor[];
     private readonly products: ArchitectureComponentAnchor[];
     private readonly logoConfiguration: LogoConfiguration | undefined;
+    private readonly flowSegments: FlowSegment[];
     private readonly padding: CanvasPadding;
 
     constructor(
@@ -24,6 +26,7 @@ export class CoastiCanvas {
         servers: ArchitectureComponentAnchor[],
         products: ArchitectureComponentAnchor[],
         logoConfiguration: LogoConfiguration | undefined,
+        flowSegments: FlowSegment[],
     ) {
         this.wrapper = wrapper;
         this.layout = layout;
@@ -31,6 +34,7 @@ export class CoastiCanvas {
         this.servers = servers;
         this.products = products;
         this.logoConfiguration = logoConfiguration;
+        this.flowSegments = flowSegments;
         this.padding = dimensions.padding;
         this.coordinates = new CoordinateSystem(dimensions);
     }
@@ -71,6 +75,11 @@ export class CoastiCanvas {
                 },
             ).render();
         }
+        new FlowParticles(
+            svg.append("g").attr("class", "flow-layer"),
+            this.coordinates,
+            this.flowSegments,
+        ).render();
         this.renderComponents(svg, tooltip);
         return this;
     }

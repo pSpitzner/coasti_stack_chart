@@ -68,6 +68,21 @@ body {
     filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.28));
 }
 
+/* Data-flow particles sit above the matrix background and below all components. */
+.flow-layer {
+    pointer-events: none;
+}
+
+.flow-particle-path {
+    fill: none;
+    stroke: none;
+    visibility: hidden;
+}
+
+.flow-particle {
+    filter: blur(1.5px);
+}
+
 /* Coasti logo interaction */
 .logo-component {
     cursor: pointer;

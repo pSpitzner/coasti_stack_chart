@@ -5,6 +5,7 @@ import type { ArchitectureComponentAnchor } from "./chart/ArchitectureComponent"
 import type { CanvasPadding } from "./chart/CoordinateSystem";
 import type { LogoConfiguration } from "./chart/LogoComponent";
 import type { ComponentAnchor } from "./chart/SvgComponent";
+import type { FlowSegment } from "./chart/FlowParticles";
 
 export const dimensions = {
     // Width of one product column in the reference drawing.
@@ -63,13 +64,32 @@ export const layout = {
     },
 };
 
-
 // Brand logo on the top left, has some special hover and logic
 export const logo: LogoConfiguration = {
-    tooltipText: "coasti is, in essence, just a standard. It is the glue that defines how to structure components, docker containers, and products, so that they can play nice together.<br><br><b>Hover over icons</b> to find out more.",
+    tooltipText:
+        "coasti is, in essence, just a standard. It is the glue that defines how to structure components, docker containers, and products, so that they can play nice together.<br><br><b>Hover over icons</b> to find out more.",
     x: -10,
     y: -32,
 };
+
+export const flowSegments: FlowSegment[] = [
+    {
+        start: { x: 32.5, y: 113 },
+        end: { x: 32.5, y: 100 },
+        baseColor: "#969390",
+        sourceWidth: 50,
+        targetWidth: 10,
+        particleCount: 64,
+    },
+    {
+        start: { x: 32.5, y: 35 },
+        end: { x: 32.5, y: 22 },
+        baseColor: "#4fb1ce",
+        sourceWidth: 10,
+        targetWidth: 60,
+        particleCount: 64,
+    },
+];
 
 // Keep the diagram editable through this list. Coordinates are millimetres,
 // so changing a block's position does not require reasoning about pixels.
@@ -307,6 +327,7 @@ export function mount(target: string | HTMLElement) {
         servers,
         products,
         logo,
+        flowSegments,
     ).render();
 }
 
