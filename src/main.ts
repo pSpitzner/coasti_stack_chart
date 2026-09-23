@@ -2,6 +2,7 @@
 import "./style.css";
 import { CoastiCanvas } from "./chart/CoastiCanvas";
 import type { ArchitectureComponentAnchor } from "./chart/ArchitectureComponent";
+import type { CanvasPadding } from "./chart/CoordinateSystem";
 
 type Millimetres = number;
 
@@ -32,28 +33,34 @@ export const dimensions = {
     rowGap: 8,
     // Conversion factor from millimetres to SVG coordinate units.
     scale: 4,
-    // Empty space around the complete diagram before the first component starts.
-    padding: 16,
+    // Extra viewBox space outside the inner matrix. With all values at zero,
+    // only the inner matrix components remain visible; surrounding architecture
+    // icons, the logo, and the matrix background edge are clipped.
+    padding: {
+        // Reveals the server icons placed to the left of the matrix.
+        left: 90,
+        // Adds breathing room beyond the matrix's right edge.
+        right: 24,
+        // Reveals the logo and the matrix background edge above the matrix.
+        top: 48,
+        // Reveals the product icons below the matrix.
+        bottom: 48,
+    } satisfies CanvasPadding,
 };
 
 export const layout = {
-    serverWidth: 58,
-    serverGap: 14,
-    stackOffset: 58 + 14,
-    stackWidth: dimensions.columnWidth * 3 + dimensions.largeGap * 2,
-    stackHeight: 137,
-    productGap: 10,
-    productHeight: 24,
-    canvasWidth:
-        58 +
-        14 +
-        dimensions.columnWidth * 3 +
-        dimensions.largeGap * 2,
-    canvasHeight: 137 + 10 + 24,
+    // The inner matrix is the rectangular area containing the product building
+    // blocks: Superset, content packages, transformations, storage, and source
+    // systems. It excludes the surrounding server/product icons, the logo, and
+    // the dark background margin. Its top-left corner is coordinate (0, 0).
+    matrixWidth: dimensions.columnWidth * 3 + dimensions.largeGap * 2,
+    matrixHeight: 137,
+    // Vertical gap between the matrix rows and the product icons.
+    productGap: 14,
     columns: {
-        first: 58 + 14,
-        center: 58 + 14 + dimensions.columnWidth + dimensions.largeGap,
-        third: 58 + 14 + (dimensions.columnWidth + dimensions.largeGap) * 2,
+        first: 0,
+        center: dimensions.columnWidth + dimensions.largeGap,
+        third: (dimensions.columnWidth + dimensions.largeGap) * 2,
     },
     rows: {
         frontend: 0,
@@ -74,9 +81,9 @@ export const components: ComponentAnchor[] = [
         tooltipHeading: "Superset",
         tooltipText:
             "Provides the dashboards and charts that users explore. It reads the reporting models produced by the data pipeline.",
-        x: layout.stackOffset,
+        x: 0,
         y: layout.rows.frontend,
-        width: layout.stackWidth,
+        width: layout.matrixWidth,
         height: dimensions.frontendHeight,
     },
     {
@@ -167,7 +174,7 @@ export const components: ComponentAnchor[] = [
         x: layout.columns.center + 38 + dimensions.smallGap,
         y: layout.rows.transformation + 16 + dimensions.smallGap,
         width: 24,
-        height: 55,
+        height: dimensions.transformationHeight - 16 - dimensions.smallGap,
     },
     {
         id: "fachverfahren",
@@ -200,7 +207,7 @@ export const servers: ArchitectureComponentAnchor[] = [
         tooltipText:
             "Serves Superset dashboards and charts to end users. It receives prepared reporting data from the backend.",
         componentIds: ["superset"],
-        x: 36,
+        x: -36,
         y: 6,
     },
     {
@@ -219,7 +226,7 @@ export const servers: ArchitectureComponentAnchor[] = [
             "cp_ingestion",
             "cp_storage",
         ],
-        x: 36,
+        x: -36,
         y: 62,
     },
     {
@@ -235,7 +242,7 @@ export const servers: ArchitectureComponentAnchor[] = [
             "fachverfahren",
             "fachverfahren_storage",
         ],
-        x: 36,
+        x: -36,
         y: 119,
     },
 ];
@@ -250,7 +257,7 @@ export const products: ArchitectureComponentAnchor[] = [
             "A product combines the data and frontend building blocks for one reporting use case.",
         componentIds: ["content_paket_with_text", "vorsystem_with_text"],
         x: layout.columns.first + 24,
-        y: layout.stackHeight + layout.productGap,
+        y: layout.matrixHeight + layout.productGap,
     },
     {
         id: "coasti-products",
@@ -269,7 +276,7 @@ export const products: ArchitectureComponentAnchor[] = [
             "fachverfahren_storage",
         ],
         x: layout.columns.center + 24,
-        y: layout.stackHeight + layout.productGap,
+        y: layout.matrixHeight + layout.productGap,
         textPosition: "below",
         textAlign: "center",
     },
@@ -282,7 +289,7 @@ export const products: ArchitectureComponentAnchor[] = [
             "A product combines the data and frontend building blocks for one reporting use case.",
         componentIds: ["content_paket_wo_text", "vorsystem_wo_text"],
         x: layout.columns.third + 24,
-        y: layout.stackHeight + layout.productGap,
+        y: layout.matrixHeight + layout.productGap,
     },
 ];
 

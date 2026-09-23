@@ -9,6 +9,15 @@ body { margin: 0; min-width: 320px; }
 .chart-wrapper { position: relative; }
 .coasti-canvas { display: block; width: 100%; height: auto; overflow: visible; }
 .canvas-background { fill: #abbfc4; }
+.matrix-background {
+  fill: #0E4B60;
+  transition: filter .36s ease;
+}
+.coasti-canvas.has-hovered .matrix-background,
+.coasti-canvas.has-architecture-hovered .matrix-background {
+  filter: blur(2.5px);
+}
+.coasti-logo { display: block; }
 .component-image {
   display: block;
   transition: x .36s ease, y .36s ease, width .36s ease, height .36s ease;
@@ -53,6 +62,12 @@ body { margin: 0; min-width: 320px; }
   filter: blur(2.5px);
 }
 .architecture-component-layer.has-architecture-hovered .architecture-component:not(.is-hovered) {
+  filter: blur(2.5px);
+}
+.coasti-canvas.has-architecture-hovered .architecture-component:not(.is-hovered) {
+  filter: blur(2.5px);
+}
+.coasti-canvas.has-component-hovered .architecture-component {
   filter: blur(2.5px);
 }
 .component.is-architecture-linked {

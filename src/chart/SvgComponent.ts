@@ -49,8 +49,8 @@ export class SvgComponent {
     }
 
     render(): this {
-        const x = this.coordinates.toSvgPosition(this.anchor.x);
-        const y = this.coordinates.toSvgPosition(this.anchor.y);
+        const x = this.coordinates.toSvgPosition(this.anchor.x, "x");
+        const y = this.coordinates.toSvgPosition(this.anchor.y, "y");
         const width = this.coordinates.toSvgUnits(this.anchor.width);
         const height = this.coordinates.toSvgUnits(this.anchor.height);
 
@@ -75,6 +75,10 @@ export class SvgComponent {
         const setHovered = (hovered: boolean, event?: PointerEvent) => {
             this.group.classed("is-hovered", hovered);
             this.layer.classed("has-hovered", hovered);
+            const canvas = this.layer.node()?.closest(".coasti-canvas");
+            if (canvas) {
+                d3.select(canvas).classed("has-hovered", hovered).classed("has-component-hovered", hovered);
+            }
             if (hovered) {
                 if (event) this.tooltip.show(
                     this.tooltipHeading,

@@ -70,8 +70,8 @@ export class ArchitectureComponent {
     }
 
     render(): this {
-        const x = this.coordinates.toSvgPosition(this.anchor.x);
-        const y = this.coordinates.toSvgPosition(this.anchor.y);
+        const x = this.coordinates.toSvgPosition(this.anchor.x, "x");
+        const y = this.coordinates.toSvgPosition(this.anchor.y, "y");
         const iconWidth = this.coordinates.toSvgUnits(
             this.anchor.iconWidth ?? defaultArchitectureOptions.iconWidth,
         );
@@ -161,6 +161,10 @@ export class ArchitectureComponent {
             const architectureLayer = this.group.node()?.parentElement;
             if (architectureLayer) {
                 d3.select(architectureLayer).classed("has-architecture-hovered", hovered);
+            }
+            const canvas = this.group.node()?.closest(".coasti-canvas");
+            if (canvas) {
+                d3.select(canvas).classed("has-architecture-hovered", hovered);
             }
             this.componentLayer.classed("has-architecture-hovered", hovered);
             const linkedComponentIds = this.anchor.componentIds;
