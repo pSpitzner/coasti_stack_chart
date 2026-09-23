@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 225 234" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,2840,-1640)">
+        <g id="details" transform="matrix(4.166667,0,0,4.166667,-4027.5,477.5)">
+            <rect x="300" y="287" width="39" height="44" style="fill:rgb(100,123,139);fill-rule:nonzero;"/>
+            <path d="M337,279L287,279C285.895,279 285,279.895 285,281L285,287L339,287L339,281C339,279.895 338.105,279 337,279Z" style="fill:rgb(215,220,222);fill-rule:nonzero;"/>
+            <path d="M285,331L285,333C285,334.105 285.895,335 287,335L337,335C338.105,335 339,334.105 339,333L339,331L285,331Z" style="fill:rgb(215,220,222);fill-rule:nonzero;"/>
+            <path d="M305,283C305,284.104 304.104,285 303,285C301.896,285 301,284.104 301,283C301,281.896 301.896,281 303,281C304.104,281 305,281.896 305,283Z" style="fill:rgb(71,189,156);fill-rule:nonzero;"/>
+            <path d="M299,283C299,284.104 298.104,285 297,285C295.896,285 295,284.104 295,283C295,281.896 295.896,281 297,281C298.104,281 299,281.896 299,283Z" style="fill:rgb(253,190,93);fill-rule:nonzero;"/>
+            <path d="M293,283C293,284.104 292.104,285 291,285C289.896,285 289,284.104 289,283C289,281.896 289.896,281 291,281C292.104,281 293,281.896 293,283Z" style="fill:rgb(240,96,80);fill-rule:nonzero;"/>
+            <rect x="285" y="287" width="15" height="44" style="fill:rgb(71,189,156);fill-rule:nonzero;"/>
+            <rect x="289" y="291" width="7" height="2" style="fill:white;fill-rule:nonzero;"/>
+            <rect x="304" y="291" width="31" height="6" style="fill:rgb(253,190,93);fill-rule:nonzero;"/>
+            <rect x="304" y="299" width="9" height="8" style="fill:rgb(236,242,244);fill-rule:nonzero;"/>
+            <rect x="315" y="299" width="9" height="8" style="fill:rgb(236,242,244);fill-rule:nonzero;"/>
+            <rect x="326" y="299" width="9" height="8" style="fill:rgb(236,242,244);fill-rule:nonzero;"/>
+            <rect x="304" y="309" width="9" height="8" style="fill:rgb(236,242,244);fill-rule:nonzero;"/>
+            <rect x="315" y="309" width="9" height="8" style="fill:rgb(236,242,244);fill-rule:nonzero;"/>
+            <rect x="326" y="309" width="9" height="8" style="fill:rgb(236,242,244);fill-rule:nonzero;"/>
+            <rect x="304" y="319" width="9" height="8" style="fill:rgb(236,242,244);fill-rule:nonzero;"/>
+            <rect x="315" y="319" width="9" height="8" style="fill:rgb(236,242,244);fill-rule:nonzero;"/>
+            <rect x="326" y="319" width="9" height="8" style="fill:rgb(236,242,244);fill-rule:nonzero;"/>
+            <rect x="289" y="295" width="7" height="2" style="fill:white;fill-rule:nonzero;"/>
+            <rect x="289" y="299" width="7" height="2" style="fill:white;fill-rule:nonzero;"/>
+            <rect x="289" y="303" width="7" height="2" style="fill:white;fill-rule:nonzero;"/>
+            <rect x="289" y="307" width="7" height="2" style="fill:white;fill-rule:nonzero;"/>
+        </g>
+    </g>
+</svg>

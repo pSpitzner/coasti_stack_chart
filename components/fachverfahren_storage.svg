@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 284 284" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-2038.491209,-1779.947793)">
+        <g transform="matrix(1,0,0,1.100794,1.491209,0)">
+            <g transform="matrix(0.596768,0,0,0.351309,1873.485702,1397.048476)">
+                <path d="M749,702.354L749,1282.646C749,1324.787 726.829,1359 699.521,1359L323.479,1359C296.171,1359 274,1324.787 274,1282.646L274,702.354C274,660.213 296.171,626 323.479,626L699.521,626C726.829,626 749,660.213 749,702.354Z" style="fill:url(#_Radial1);"/>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1.100794,1.491209,0)">
+            <g id="data-disk-2-grau-orange" serif:id="data disk 2 grau orange" transform="matrix(0.241232,0,0,0.25941,2008.537274,1546.181672)">
+                <g transform="matrix(1,0,0,0.844777,-335.40907,5.598145)">
+                    <path d="M1239.975,620.151L1239.975,696C1239.975,716.064 1156.857,732.353 1054.481,732.353C952.104,732.353 868.987,716.064 868.987,696L868.987,620.151C868.987,640.215 952.104,656.504 1054.481,656.504C1156.857,656.504 1239.975,640.215 1239.975,620.151Z" style="fill:rgb(128,128,128);"/>
+                </g>
+                <g transform="matrix(1.007111,0,0,0.990992,-344.226667,-112.612725)">
+                    <ellipse cx="1055.79" cy="647.936" rx="184.184" ry="30.99" style="fill:rgb(168,168,168);"/>
+                </g>
+                <g transform="matrix(1,0,0,0.844777,-335.40907,78.959848)">
+                    <path d="M1239.975,620.151L1239.975,780.872C1239.975,800.936 1156.857,817.225 1054.481,817.225C952.104,817.225 868.987,800.936 868.987,780.872L868.987,620.151C868.987,640.215 952.104,656.504 1054.481,656.504C1156.857,656.504 1239.975,640.215 1239.975,620.151Z" style="fill:rgb(128,128,128);"/>
+                </g>
+            </g>
+        </g>
+        <g transform="matrix(1,0,0,1.100794,1.491209,0)">
+            <g transform="matrix(0.545067,0,0,0.495158,1634.120641,1297.713116)">
+                <g transform="matrix(76.443227,0,0,76.443227,1147.609181,1045)">
+                </g>
+                <text x="863px" y="1045px" style="font-family:'Arial-BoldMT', 'Arial', sans-serif;font-weight:700;font-size:76.443px;fill:rgb(102,102,102);">Storage</text>
+            </g>
+        </g>
+    </g>
+    <defs>
+        <radialGradient id="_Radial1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(437.38825,541.952128,-84.323116,2811.132979,293.412516,715.665567)"><stop offset="0" style="stop-color:rgb(226,226,226);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(199,199,199);stop-opacity:1"/></radialGradient>
+    </defs>
+</svg>

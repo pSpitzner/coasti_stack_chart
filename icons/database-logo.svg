@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 179 155" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-775,-1844.455894)">
+        <g id="data-disk-2-grau-orange" serif:id="data disk 2 grau orange" transform="matrix(0.482463,0,0,0.571113,517.568567,1559.59804)">
+            <g transform="matrix(1,0,0,0.844777,-335.40907,5.598145)">
+                <path d="M1239.975,620.151L1239.975,696C1239.975,716.064 1156.857,732.353 1054.481,732.353C952.104,732.353 868.987,716.064 868.987,696L868.987,620.151C868.987,640.215 952.104,656.504 1054.481,656.504C1156.857,656.504 1239.975,640.215 1239.975,620.151Z" style="fill:rgb(45,95,126);"/>
+            </g>
+            <g transform="matrix(1.007111,0,0,0.990992,-344.226667,-112.612725)">
+                <ellipse cx="1055.79" cy="647.936" rx="184.184" ry="30.99" style="fill:rgb(116,146,167);"/>
+            </g>
+            <g transform="matrix(1,0,0,0.844777,-335.40907,78.959848)">
+                <path d="M1239.975,620.151L1239.975,780.872C1239.975,800.936 1156.857,817.225 1054.481,817.225C952.104,817.225 868.987,800.936 868.987,780.872L868.987,620.151C868.987,640.215 952.104,656.504 1054.481,656.504C1156.857,656.504 1239.975,640.215 1239.975,620.151Z" style="fill:rgb(45,95,126);"/>
+            </g>
+        </g>
+    </g>
+</svg>
