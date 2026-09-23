@@ -1,116 +1,251 @@
 :root {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #071a20;
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    background: #071a20;
 }
 
-* { box-sizing: border-box; }
-body { margin: 0; min-width: 320px; }
-#app { width: min(100%, 1120px); margin: 0 auto; padding: 24px; }
-.chart-wrapper { position: relative; }
-.coasti-canvas { display: block; width: 100%; height: auto; overflow: visible; }
-.canvas-background { fill: #abbfc4; }
-.matrix-background {
-  fill: #0E4B60;
-  transition: filter .36s ease;
+/* Global page and chart shell */
+* {
+    box-sizing: border-box;
 }
+
+body {
+    margin: 0;
+    min-width: 320px;
+}
+
+#app {
+    width: min(100%, 1120px);
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.chart-wrapper {
+    position: relative;
+}
+
+.coasti-canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+/* Canvas backgrounds */
+.canvas-background {
+    fill: #abbfc4;
+}
+
+.matrix-background {
+    fill: #0e4b60;
+    transition:
+        filter 0.36s ease;
+}
+
+.matrix-background.is-logo-hovered {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: matrix-background-bounce 2s linear infinite;
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.28));
+}
+
+@keyframes matrix-background-bounce {
+    0%,
+    20%,
+    40%,
+    50%,
+    70%,
+    80%,
+    100% {
+        transform: scale(1.0);
+    }
+
+    30%,
+    60% {
+        transform: scale(0.997);
+    }
+
+    90% {
+        transform: scale(0.997);
+    }
+}
+
+/* Coasti logo interaction */
+.logo-component {
+    cursor: pointer;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition:
+        transform 0.36s ease,
+        filter 0.36s ease;
+}
+
+.logo-component.is-hovered {
+    transform: scale(1.00);
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.28));
+}
+
+.logo-component-hit-area {
+    pointer-events: all;
+}
+
+.coasti-canvas.has-logo-hovered .architecture-component {
+    filter: blur(2.5px);
+}
+
+.coasti-logo {
+    display: block;
+}
+
+/* Architecture icons: servers and product markers */
+.architecture-component {
+    cursor: pointer;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition:
+        transform 0.36s ease,
+        filter 0.36s ease;
+}
+
+.architecture-component.is-hovered {
+    transform: scale(1.06);
+}
+
+.architecture-component-hit-area {
+    pointer-events: all;
+}
+
 .coasti-canvas.has-hovered .matrix-background,
 .coasti-canvas.has-architecture-hovered .matrix-background {
-  filter: blur(2.5px);
-}
-.coasti-logo { display: block; }
-.component-image {
-  display: block;
-  transition: x .36s ease, y .36s ease, width .36s ease, height .36s ease;
-}
-.architecture-component-text {
-  fill: #0e4d62;
-  font-family: Arial, sans-serif;
-  font-size: var(--architecture-text-size);
-  font-weight: 700;
-}
-.architecture-component {
-  cursor: pointer;
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: transform .36s ease, filter .36s ease;
-}
-.architecture-component.is-hovered {
-  transform: scale(1.06);
-}
-.architecture-component-hit-area {
-  pointer-events: all;
-}
-.architecture-component[data-architecture-component="source-server"] .architecture-component-text {
-  fill: #808080;
+    filter: blur(2.5px);
 }
 
-/* base hover effects */
+.architecture-component-text {
+    fill: #0e4d62;
+    font-family: Arial, sans-serif;
+    font-size: var(--architecture-text-size);
+    font-weight: 700;
+}
+
+.architecture-component[data-architecture-component="source-server"]
+    .architecture-component-text {
+    fill: #808080;
+}
+
+/* Inner matrix components and their hover relationships */
 .component {
-  cursor: pointer;
-  --primary-hover-padding: 4px;
-  --secondary-hover-padding: 2px;
-  --component-hover-padding: 0px;
-  transform-box: fill-box;
-  transform-origin: center;
-  transform: translate(var(--component-x), var(--component-y));
-  transition: opacity .36s ease, filter .36s ease, transform .36s ease;
+    cursor: pointer;
+    --primary-hover-padding: 4px;
+    --secondary-hover-padding: 2px;
+    --component-hover-padding: 0px;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: translate(var(--component-x), var(--component-y));
+    transition:
+        opacity 0.36s ease,
+        filter 0.36s ease,
+        transform 0.36s ease;
 }
+
+.component-image {
+    display: block;
+    transition:
+        x 0.36s ease,
+        y 0.36s ease,
+        width 0.36s ease,
+        height 0.36s ease;
+}
+
 .component-layer.has-hovered .component:not(.is-hovered) {
-  filter: blur(1.5px);
+    filter: blur(1.5px);
 }
+
 .component-layer.has-architecture-hovered .component:not(.is-architecture-linked) {
-  filter: blur(2.5px);
+    filter: blur(2.5px);
 }
-.architecture-component-layer.has-architecture-hovered .architecture-component:not(.is-hovered) {
-  filter: blur(2.5px);
+
+.architecture-component-layer.has-architecture-hovered
+    .architecture-component:not(.is-hovered) {
+    filter: blur(2.5px);
 }
+
 .coasti-canvas.has-architecture-hovered .architecture-component:not(.is-hovered) {
-  filter: blur(2.5px);
+    filter: blur(2.5px);
 }
+
 .coasti-canvas.has-component-hovered .architecture-component {
-  filter: blur(2.5px);
+    filter: blur(2.5px);
 }
+
 .component.is-architecture-linked {
-  --component-hover-padding: var(--secondary-hover-padding);
-  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, .16));
+    --component-hover-padding: var(--secondary-hover-padding);
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.16));
 }
+
 .component.is-hovered {
-  --component-hover-padding: var(--primary-hover-padding);
+    --component-hover-padding: var(--primary-hover-padding);
+    filter: drop-shadow(0 5px 7px rgba(0, 0, 0, 0.28));
 }
-.component.is-hovered {
-  filter: drop-shadow(0 5px 7px rgba(0, 0, 0, .28));
-}
+
 .component.is-hovered .component-image,
 .component.is-architecture-linked .component-image {
-  x: calc(var(--component-hover-padding) * -1);
-  y: calc(var(--component-hover-padding) * -1);
-  width: calc(var(--component-width) + var(--component-hover-padding) + var(--component-hover-padding));
-  height: calc(var(--component-height) + var(--component-hover-padding) + var(--component-hover-padding));
+    x: calc(var(--component-hover-padding) * -1);
+    y: calc(var(--component-hover-padding) * -1);
+    width: calc(
+        var(--component-width) + var(--component-hover-padding) +
+            var(--component-hover-padding)
+    );
+    height: calc(
+        var(--component-height) + var(--component-hover-padding) +
+            var(--component-hover-padding)
+    );
 }
-.component-tooltip {
-  position: fixed;
-  z-index: 10;
-  display: grid;
-  gap: 4px;
-  max-width: 280px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: rgba(3, 55, 70, 0.68);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #fff;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .36s ease-out;
-}
-.component-tooltip.is-visible {
-  opacity: 1;
-  transition: opacity .36s ease-in-out;
-}
-.component-tooltip strong { font-size: .85rem; }
-.component-tooltip span { color: #dcebef; font-size: .75rem; line-height: 1.4; }
 
+/* Shared tooltip */
+.component-tooltip {
+    position: fixed;
+    z-index: 10;
+    display: grid;
+    gap: 4px;
+    max-width: 280px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: rgba(3, 55, 70, 0.68);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.36s ease-out;
+}
+
+.component-tooltip.is-visible {
+    opacity: 1;
+    transition: opacity 0.36s ease-in-out;
+}
+
+.component-tooltip strong {
+    font-size: 0.85rem;
+}
+.component-tooltip span {
+    color: #dcebef;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+/* Preserve the wide diagram on small screens instead of shrinking its labels. */
 @media (max-width: 700px) {
-  #app { min-width: 760px; }
-  body { overflow-x: auto; }
+    #app {
+        min-width: 760px;
+    }
+
+    body {
+        overflow-x: auto;
+    }
 }

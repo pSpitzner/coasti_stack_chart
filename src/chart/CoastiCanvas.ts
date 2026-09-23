@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import { CoordinateSystem, type CanvasLayout, type CanvasPadding } from "./CoordinateSystem";
 import { SvgComponent } from "./SvgComponent";
 import { ArchitectureComponent, type ArchitectureComponentAnchor } from "./ArchitectureComponent";
+import { LogoComponent } from "./LogoComponent";
 import { Tooltip } from "./Tooltip";
 import type { ComponentAnchor } from "../main";
 
@@ -58,37 +59,29 @@ export class CoastiCanvas {
                 this.padding.top + this.padding.bottom,
             ));
 
-        // Extra dark rounded rectangle around the inner matrix content.
-        const matrixPadding = 8;
-        const logoWidth = 60;
-        const logoHeight = 21;
-        const logoGap = 3;
-        svg.append("rect")
-            .attr("class", "matrix-background")
-            .attr("x", this.coordinates.toSvgPosition(-matrixPadding, "x"))
-            .attr("y", this.coordinates.toSvgPosition(-matrixPadding, "y"))
-            .attr("width", this.coordinates.toSvgUnits(this.layout.matrixWidth + matrixPadding * 2))
-            .attr("height", this.coordinates.toSvgUnits(this.layout.matrixHeight + matrixPadding * 2))
-            .attr("rx", this.coordinates.toSvgUnits(3))
-            .attr("ry", this.coordinates.toSvgUnits(3));
-
         const logoSource = iconFiles["/icons/coasti.svg"] ??
             Object.entries(iconFiles).find(([path]) => path.endsWith("/coasti.svg"))?.[1];
-        if (logoSource) {
-            svg.append("image")
-                .attr("class", "coasti-logo")
-                .attr("href", logoSource)
-                .attr("x", this.coordinates.toSvgPosition(-10, "x"))
-                .attr("y", this.coordinates.toSvgPosition(-matrixPadding - logoHeight - logoGap, "y"))
-                .attr("width", this.coordinates.toSvgUnits(logoWidth))
-                .attr("height", this.coordinates.toSvgUnits(logoHeight))
-                .attr("preserveAspectRatio", "xMidYMid meet")
-                .attr("role", "img")
-                .attr("aria-label", "coasti logo");
-        }
-
-        const componentLayer = svg.append("g").attr("class", "component-layer");
         const tooltip = new Tooltip(this.wrapper);
+        if (logoSource) {
+            new LogoComponent(
+                svg.append("g").attr("class", "logo-layer"),
+                this.coordinates,
+                tooltip,
+                {
+                    source: logoSource,
+                    matrixWidth: this.layout.matrixWidth,
+                    matrixHeight: this.layout.matrixHeight,
+                    x: -10,
+                    y: -32,
+                },
+            ).render();
+        }
+        this.renderComponents(svg, tooltip);
+        return this;
+    }
+
+    private renderComponents(svg: d3.Selection<SVGSVGElement, unknown, null, undefined>, tooltip: Tooltip): void {
+        const componentLayer = svg.append("g").attr("class", "component-layer");
         this.components.forEach((anchor) => {
             new SvgComponent(
                 componentLayer,
@@ -123,7 +116,5 @@ export class CoastiCanvas {
                 componentLayer,
             ).render();
         });
-
-        return this;
     }
 }
