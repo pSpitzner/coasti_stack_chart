@@ -16,7 +16,7 @@ export interface ArchitectureComponentAnchor {
     id: string;
     iconId: string;
     text: string;
-    tooltipHeading: string;
+    tooltipHeading?: string;
     tooltipText: string;
     componentIds: string[];
     x: number;

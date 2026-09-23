@@ -3,8 +3,25 @@ import * as d3 from "d3";
 import { CoordinateSystem } from "./CoordinateSystem";
 import { Tooltip } from "./Tooltip";
 
+const iconFiles = import.meta.glob("../../icons/*.svg", {
+    eager: true,
+    import: "default",
+    query: "?url",
+}) as Record<string, string>;
+
+const logoSource = iconFiles["/icons/coasti.svg"] ??
+    Object.entries(iconFiles).find(([path]) => path.endsWith("/coasti.svg"))?.[1];
+
+export interface LogoConfiguration {
+    tooltipHeading?: string;
+    tooltipText: string;
+    x: number;
+    y: number;
+}
+
 export interface LogoComponentOptions {
-    source: string;
+    tooltipHeading?: string;
+    tooltipText: string;
     matrixWidth: number;
     matrixHeight: number;
     x: number;
@@ -30,6 +47,10 @@ export class LogoComponent {
     }
 
     render(): this {
+        if (!logoSource) {
+            return this;
+        }
+
         const matrixPadding = 8;
         const logoWidth = 60;
         const logoHeight = 21;
@@ -38,6 +59,10 @@ export class LogoComponent {
             .attr("class", "matrix-background-group")
             .append("rect")
             .attr("class", "matrix-background")
+            .style("--logo-shift-x", "0px")
+            .style("--logo-shift-y", "0px")
+            .style("--logo-rotate-x", "0deg")
+            .style("--logo-rotate-y", "0deg")
             .attr("x", this.coordinates.toSvgPosition(-matrixPadding, "x"))
             .attr("y", this.coordinates.toSvgPosition(-matrixPadding, "y"))
             .attr("width", this.coordinates.toSvgUnits(this.options.matrixWidth + matrixPadding * 2))
@@ -48,12 +73,16 @@ export class LogoComponent {
         const logo = this.layer
             .append("g")
             .attr("class", "logo-component")
+            .style("--logo-shift-x", "0px")
+            .style("--logo-shift-y", "0px")
+            .style("--logo-rotate-x", "0deg")
+            .style("--logo-rotate-y", "0deg")
             .attr("tabindex", 0)
             .attr("role", "group")
             .attr("aria-label", "Coasti logo");
         logo.append("image")
             .attr("class", "coasti-logo")
-            .attr("href", this.options.source)
+            .attr("href", logoSource)
             .attr("x", this.coordinates.toSvgPosition(this.options.x, "x"))
             .attr("y", this.coordinates.toSvgPosition(this.options.y, "y"))
             .attr("width", this.coordinates.toSvgUnits(logoWidth))
@@ -69,9 +98,46 @@ export class LogoComponent {
             .attr("height", this.coordinates.toSvgUnits(logoHeight) + 4)
             .attr("fill", "transparent");
 
+        let interactionBounds: DOMRect | undefined;
+
+        const resetTileTransform = () => {
+            for (const tile of [logo, matrixBackground]) {
+                tile
+                    .style("--logo-shift-x", "0px")
+                    .style("--logo-shift-y", "0px")
+                    .style("--logo-rotate-x", "0deg")
+                    .style("--logo-rotate-y", "0deg");
+            }
+        };
+
+        const updateTileTransform = (event: PointerEvent) => {
+            const bounds = interactionBounds;
+            if (!bounds) {
+                return;
+            }
+
+            const horizontalOffset = (event.clientX - (bounds.left + bounds.width / 2)) /
+                (bounds.width / 2);
+            const verticalOffset = (event.clientY - (bounds.top + bounds.height / 2)) /
+                (bounds.height / 2);
+            const clampedHorizontalOffset = Math.max(-1, Math.min(1, horizontalOffset));
+            const clampedVerticalOffset = Math.max(-1, Math.min(1, verticalOffset));
+
+            for (const tile of [logo, matrixBackground]) {
+                tile
+                    .style("--logo-shift-x", `${clampedHorizontalOffset * 3}px`)
+                    .style("--logo-shift-y", `${clampedVerticalOffset * 3}px`)
+                    .style("--logo-rotate-x", `${clampedVerticalOffset * -6}deg`)
+                    .style("--logo-rotate-y", `${clampedHorizontalOffset * 6}deg`);
+            }
+        };
+
         const setHovered = (hovered: boolean, event?: PointerEvent) => {
             logo.classed("is-hovered", hovered);
             matrixBackground.classed("is-logo-hovered", hovered);
+            if (!hovered) {
+                resetTileTransform();
+            }
             const canvas = logo.node()?.closest(".coasti-canvas");
             if (canvas) {
                 d3.select(canvas).classed("has-logo-hovered", hovered);
@@ -79,16 +145,16 @@ export class LogoComponent {
             if (hovered) {
                 if (event) {
                     this.tooltip.show(
-                        "Coasti",
-                        "The Coasti platform architecture.",
+                        this.options.tooltipHeading,
+                        this.options.tooltipText,
                         event,
                         -20,
                         28,
                     );
                 } else if (logo.node()) {
                     this.tooltip.showForElement(
-                        "Coasti",
-                        "The Coasti platform architecture.",
+                        this.options.tooltipHeading,
+                        this.options.tooltipText,
                         logo.node()!,
                     );
                 }
@@ -98,11 +164,29 @@ export class LogoComponent {
         };
 
         logo
-            .on("pointerenter", (event) => setHovered(true, event))
-            .on("pointermove", (event) => setHovered(true, event))
-            .on("pointerleave", () => setHovered(false))
-            .on("focus", () => setHovered(true))
-            .on("blur", () => setHovered(false));
+            .on("pointerenter", (event) => {
+                interactionBounds = logo.node()?.getBoundingClientRect();
+                setHovered(true, event);
+                updateTileTransform(event);
+            })
+            .on("pointermove", (event) => {
+                interactionBounds ??= logo.node()?.getBoundingClientRect();
+                setHovered(true, event);
+                updateTileTransform(event);
+            })
+            .on("pointerleave", () => {
+                interactionBounds = undefined;
+                setHovered(false);
+            })
+            .on("focus", () => {
+                interactionBounds = undefined;
+                resetTileTransform();
+                setHovered(true);
+            })
+            .on("blur", () => {
+                interactionBounds = undefined;
+                setHovered(false);
+            });
 
         return this;
     }

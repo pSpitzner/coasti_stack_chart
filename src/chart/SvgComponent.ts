@@ -2,8 +2,16 @@
 import * as d3 from "d3";
 import { CoordinateSystem } from "./CoordinateSystem";
 import { Tooltip } from "./Tooltip";
-import type { ComponentAnchor } from "../main";
 
+export interface ComponentAnchor {
+    id: string;
+    tooltipHeading?: string;
+    tooltipText: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
 const svgFiles = import.meta.glob("../../components/*.svg", {
     eager: true,
     import: "default",
@@ -28,7 +36,7 @@ export class SvgComponent {
     private readonly anchor: ComponentAnchor;
     private readonly coordinates: CoordinateSystem;
     private readonly tooltip: Tooltip;
-    private readonly tooltipHeading: string;
+    private readonly tooltipHeading: string | undefined;
     private readonly tooltipText: string;
 
     constructor(
@@ -36,7 +44,7 @@ export class SvgComponent {
         anchor: ComponentAnchor,
         coordinates: CoordinateSystem,
         tooltip: Tooltip,
-        tooltipHeading: string,
+        tooltipHeading: string | undefined,
         tooltipText: string,
     ) {
         this.anchor = anchor;

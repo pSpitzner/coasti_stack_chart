@@ -44,36 +44,22 @@ body {
 
 .matrix-background {
     fill: #0e4b60;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: translate(
+            calc(var(--logo-shift-x) * 0.18),
+            calc(var(--logo-shift-y) * 0.18)
+        )
+        perspective(1400px)
+        rotateX(calc(var(--logo-rotate-x) * 0.15))
+        rotateY(calc(var(--logo-rotate-y) * 0.15));
     transition:
+        transform 0.36s ease,
         filter 0.36s ease;
 }
 
 .matrix-background.is-logo-hovered {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: matrix-background-bounce 2s linear infinite;
-    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.28));
-}
-
-@keyframes matrix-background-bounce {
-    0%,
-    20%,
-    40%,
-    50%,
-    70%,
-    80%,
-    100% {
-        transform: scale(1.0);
-    }
-
-    30%,
-    60% {
-        transform: scale(0.997);
-    }
-
-    90% {
-        transform: scale(0.997);
-    }
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.28));
 }
 
 /* Coasti logo interaction */
@@ -81,13 +67,15 @@ body {
     cursor: pointer;
     transform-box: fill-box;
     transform-origin: center;
+    transform: translate(var(--logo-shift-x), var(--logo-shift-y))
+        perspective(700px) rotateX(var(--logo-rotate-x))
+        rotateY(var(--logo-rotate-y)) scale(1.00);
     transition:
         transform 0.36s ease,
         filter 0.36s ease;
 }
 
 .logo-component.is-hovered {
-    transform: scale(1.00);
     filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.28));
 }
 
@@ -96,6 +84,11 @@ body {
 }
 
 .coasti-canvas.has-logo-hovered .architecture-component {
+    filter: blur(2.5px);
+}
+
+.coasti-canvas.has-hovered .logo-component,
+.coasti-canvas.has-architecture-hovered .logo-component {
     filter: blur(2.5px);
 }
 

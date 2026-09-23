@@ -3,18 +3,8 @@ import "./style.css";
 import { CoastiCanvas } from "./chart/CoastiCanvas";
 import type { ArchitectureComponentAnchor } from "./chart/ArchitectureComponent";
 import type { CanvasPadding } from "./chart/CoordinateSystem";
-
-type Millimetres = number;
-
-export interface ComponentAnchor {
-    id: string;
-    tooltipHeading: string;
-    tooltipText: string;
-    x: Millimetres;
-    y: Millimetres;
-    width: Millimetres;
-    height: Millimetres;
-}
+import type { LogoConfiguration } from "./chart/LogoComponent";
+import type { ComponentAnchor } from "./chart/SvgComponent";
 
 export const dimensions = {
     // Width of one product column in the reference drawing.
@@ -71,6 +61,14 @@ export const layout = {
             dimensions.transformationHeight +
             dimensions.rowGap,
     },
+};
+
+
+// Brand logo on the top left, has some special hover and logic
+export const logo: LogoConfiguration = {
+    tooltipText: "coasti is, in essence, just a standard. It is the glue that defines how to structure components, docker containers, and products, so that they can play nice together.<br><br><b>Hover over icons</b> to find out more.",
+    x: -10,
+    y: -32,
 };
 
 // Keep the diagram editable through this list. Coordinates are millimetres,
@@ -301,7 +299,15 @@ export function mount(target: string | HTMLElement) {
     if (!wrapper)
         throw new Error(`Coasti Stack mount target not found: ${String(target)}`);
     wrapper.replaceChildren();
-    new CoastiCanvas(wrapper, layout, dimensions, components, servers, products).render();
+    new CoastiCanvas(
+        wrapper,
+        layout,
+        dimensions,
+        components,
+        servers,
+        products,
+        logo,
+    ).render();
 }
 
 declare global {

@@ -1,17 +1,10 @@
 // Coordinates and renders the complete Coasti architecture canvas.
 import * as d3 from "d3";
 import { CoordinateSystem, type CanvasLayout, type CanvasPadding } from "./CoordinateSystem";
-import { SvgComponent } from "./SvgComponent";
+import { SvgComponent, type ComponentAnchor } from "./SvgComponent";
 import { ArchitectureComponent, type ArchitectureComponentAnchor } from "./ArchitectureComponent";
-import { LogoComponent } from "./LogoComponent";
+import { LogoComponent, type LogoConfiguration } from "./LogoComponent";
 import { Tooltip } from "./Tooltip";
-import type { ComponentAnchor } from "../main";
-
-const iconFiles = import.meta.glob("../../icons/*.svg", {
-    eager: true,
-    import: "default",
-    query: "?url",
-}) as Record<string, string>;
 
 export class CoastiCanvas {
     private readonly coordinates: CoordinateSystem;
@@ -20,6 +13,7 @@ export class CoastiCanvas {
     private readonly components: ComponentAnchor[];
     private readonly servers: ArchitectureComponentAnchor[];
     private readonly products: ArchitectureComponentAnchor[];
+    private readonly logoConfiguration: LogoConfiguration | undefined;
     private readonly padding: CanvasPadding;
 
     constructor(
@@ -29,12 +23,14 @@ export class CoastiCanvas {
         components: ComponentAnchor[],
         servers: ArchitectureComponentAnchor[],
         products: ArchitectureComponentAnchor[],
+        logoConfiguration: LogoConfiguration | undefined,
     ) {
         this.wrapper = wrapper;
         this.layout = layout;
         this.components = components;
         this.servers = servers;
         this.products = products;
+        this.logoConfiguration = logoConfiguration;
         this.padding = dimensions.padding;
         this.coordinates = new CoordinateSystem(dimensions);
     }
@@ -59,20 +55,19 @@ export class CoastiCanvas {
                 this.padding.top + this.padding.bottom,
             ));
 
-        const logoSource = iconFiles["/icons/coasti.svg"] ??
-            Object.entries(iconFiles).find(([path]) => path.endsWith("/coasti.svg"))?.[1];
         const tooltip = new Tooltip(this.wrapper);
-        if (logoSource) {
+        if (this.logoConfiguration) {
             new LogoComponent(
                 svg.append("g").attr("class", "logo-layer"),
                 this.coordinates,
                 tooltip,
                 {
-                    source: logoSource,
+                    tooltipHeading: this.logoConfiguration.tooltipHeading,
+                    tooltipText: this.logoConfiguration.tooltipText,
                     matrixWidth: this.layout.matrixWidth,
                     matrixHeight: this.layout.matrixHeight,
-                    x: -10,
-                    y: -32,
+                    x: this.logoConfiguration.x,
+                    y: this.logoConfiguration.y,
                 },
             ).render();
         }
