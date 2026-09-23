@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { CoordinateSystem } from "./CoordinateSystem";
+import { Tooltip } from "./Tooltip";
 import type { ComponentAnchor } from "../main";
 
 const svgFiles = import.meta.glob("../../components/*.svg", {
@@ -25,15 +26,24 @@ export class SvgComponent {
     private readonly layer: d3.Selection<SVGGElement, unknown, null, undefined>;
     private readonly anchor: ComponentAnchor;
     private readonly coordinates: CoordinateSystem;
+    private readonly tooltip: Tooltip;
+    private readonly tooltipHeading: string;
+    private readonly tooltipText: string;
 
     constructor(
         layer: d3.Selection<SVGGElement, unknown, null, undefined>,
         anchor: ComponentAnchor,
         coordinates: CoordinateSystem,
+        tooltip: Tooltip,
+        tooltipHeading: string,
+        tooltipText: string,
     ) {
         this.anchor = anchor;
         this.coordinates = coordinates;
         this.layer = layer;
+        this.tooltip = tooltip;
+        this.tooltipHeading = tooltipHeading;
+        this.tooltipText = tooltipText;
         this.group = layer.append("g");
     }
 
@@ -59,13 +69,20 @@ export class SvgComponent {
             .attr("role", "img")
             .attr("aria-label", this.anchor.id);
 
-        const setHovered = (hovered: boolean) => {
+        const setHovered = (hovered: boolean, event?: PointerEvent) => {
             this.group.classed("is-hovered", hovered);
             this.layer.classed("has-hovered", hovered);
+            if (hovered) {
+                if (event) this.tooltip.show(this.tooltipHeading, this.tooltipText, event);
+                else if (this.group.node()) this.tooltip.showForElement(this.tooltipHeading, this.tooltipText, this.group.node()!);
+            } else {
+                this.tooltip.hide();
+            }
         };
 
         this.group
-            .on("pointerenter", () => setHovered(true))
+            .on("pointerenter", (event) => setHovered(true, event))
+            .on("pointermove", (event) => setHovered(true, event))
             .on("pointerleave", () => setHovered(false))
             .on("focus", () => setHovered(true))
             .on("blur", () => setHovered(false));

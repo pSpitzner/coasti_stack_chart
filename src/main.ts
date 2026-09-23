@@ -5,6 +5,8 @@ type Millimetres = number;
 
 export interface ComponentAnchor {
     id: string;
+    tooltipHeading: string;
+    tooltipText: string;
     x: Millimetres;
     y: Millimetres;
     width: Millimetres;
@@ -61,6 +63,9 @@ export const layout = {
 export const components: ComponentAnchor[] = [
     {
         id: "superset",
+        tooltipHeading: "Superset",
+        tooltipText:
+            "Provides the dashboards and charts that users explore. It reads the reporting models produced by the data pipeline.",
         x: 0,
         y: layout.rows.frontend,
         width: layout.canvasWidth,
@@ -68,6 +73,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "content_paket_with_text",
+        tooltipHeading: "Content Package",
+        tooltipText:
+            "A reusable product that bundles ingestion, storage, transformations, orchestration, and Superset content into one installable unit.",
         x: layout.columns.first,
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
@@ -75,6 +83,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "vorsystem_with_text",
+        tooltipHeading: "Source System",
+        tooltipText:
+            "Operational applications provide the raw data. Ingestion copies that data without changing it, keeping source systems isolated from BI workloads.",
         x: layout.columns.first,
         y: layout.rows.source,
         width: dimensions.columnWidth,
@@ -82,6 +93,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "content_paket_wo_text",
+        tooltipHeading: "More Products",
+        tooltipText:
+            "coasti scales horzitonally: Everyone can build an contribute products, following the same recipe.",
         x: layout.columns.third,
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
@@ -89,6 +103,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "vorsystem_wo_text",
+        tooltipHeading: "More Source Systems",
+        tooltipText:
+            "coasti scales horzitonally: Everyone can build an contribute products, following the same recipe.",
         x: layout.columns.third,
         y: layout.rows.source,
         width: dimensions.columnWidth,
@@ -96,6 +113,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "cp_frontend_content",
+        tooltipHeading: "Frontend Content",
+        tooltipText:
+            "Contains Superset dashboards, charts, and datasets as versioned files. The installer loads them into Superset so deployments stay reproducible.",
         x: layout.columns.center,
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
@@ -103,6 +123,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "cp_orchestration",
+        tooltipHeading: "Orchestration",
+        tooltipText:
+            "Coordinates ingestion and transformation as one repeatable Python pipeline. A refresh can be run as a single command instead of manual steps.",
         x: layout.columns.center,
         y: layout.rows.transformation + 16 + dimensions.smallGap,
         width: 38,
@@ -110,6 +133,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "cp_transformation",
+        tooltipHeading: "Transformation",
+        tooltipText:
+            "dbt models read raw Parquet files and produce clean reporting models. Superset consumes these models without depending on a specific compute engine.",
         x: layout.columns.center,
         y: layout.rows.transformation + (16 + dimensions.smallGap) * 2,
         width: 38,
@@ -117,6 +143,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "cp_ingestion",
+        tooltipHeading: "Ingestion",
+        tooltipText:
+            "Fetches data from source systems and writes it as raw Parquet. Keeping ingestion separate preserves the original data for rebuilding models.",
         x: layout.columns.center,
         y: layout.rows.transformation + (16 + dimensions.smallGap) * 3,
         width: 38,
@@ -124,6 +153,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "cp_storage",
+        tooltipHeading: "Storage",
+        tooltipText:
+            "Holds raw Parquet files on local storage or S3. It separates durable data from the transformation and presentation layers.",
         x: layout.columns.center + 38 + dimensions.smallGap,
         y: layout.rows.transformation + 16 + dimensions.smallGap,
         width: 24,
@@ -131,6 +163,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "fachverfahren",
+        tooltipHeading: "Fachverfahren",
+        tooltipText:
+            "Operational source applications where business data is created. The backend reads from them during ingestion, while the frontend never connects directly.",
         x: layout.columns.center,
         y: layout.rows.source,
         width: 38,
@@ -138,6 +173,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "fachverfahren_storage",
+        tooltipHeading: "Source Storage",
+        tooltipText:
+            "A source-side data boundary for the Fachverfahren layer. Data is copied from here into the BI pipeline instead of repeatedly querying the operational system.",
         x: layout.columns.center + 38 + dimensions.smallGap,
         y: layout.rows.source,
         width: 24,
