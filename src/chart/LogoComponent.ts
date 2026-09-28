@@ -134,6 +134,9 @@ export class LogoComponent {
 
         const setHovered = (hovered: boolean, event?: PointerEvent) => {
             logo.classed("is-hovered", hovered);
+            if (hovered) {
+                logo.classed("has-been-hovered", true);
+            }
             matrixBackground.classed("is-logo-hovered", hovered);
             if (!hovered) {
                 resetTileTransform();

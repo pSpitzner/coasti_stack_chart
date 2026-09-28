@@ -115,6 +115,30 @@ body {
 
 .coasti-logo {
     display: block;
+    transform-box: fill-box;
+    transform-origin: 90% 50%;
+    animation: coasti-logo-bounce 4s linear infinite;
+}
+
+@keyframes coasti-logo-bounce {
+    0%,
+    80%,
+    90%,
+    100% {
+        transform: scale(1);
+    }
+
+    85% {
+        transform: scale(1.012);
+    }
+
+    95% {
+        transform: scale(1.009);
+    }
+}
+
+.logo-component.has-been-hovered .coasti-logo {
+    animation: none;
 }
 
 /* Architecture icons: servers and product markers */
