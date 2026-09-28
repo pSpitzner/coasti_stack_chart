@@ -11,8 +11,11 @@ export interface FlowSegment {
     start: FlowPoint;
     end: FlowPoint;
     baseColor: string;
+    anchorIds: string[];
     sourceWidth?: number;
     targetWidth?: number;
+    sourceHeight?: number;
+    targetHeight?: number;
     particleCount?: number;
 }
 
@@ -21,6 +24,7 @@ export class FlowParticles {
     private readonly coordinates: CoordinateSystem;
     private readonly segments: FlowSegment[];
     private timer: d3.Timer | undefined;
+    private removeInteractionListeners: (() => void) | undefined;
 
     constructor(
         layer: d3.Selection<SVGGElement, unknown, null, undefined>,
@@ -33,7 +37,7 @@ export class FlowParticles {
     }
 
     render(): this {
-        const particles = this.segments.flatMap((segment) => {
+        const particles = this.segments.flatMap((segment, segmentIndex) => {
             const startX = this.coordinates.toSvgPosition(segment.start.x, "x");
             const startY = this.coordinates.toSvgPosition(segment.start.y, "y");
             const endX = this.coordinates.toSvgPosition(segment.end.x, "x");
@@ -41,7 +45,10 @@ export class FlowParticles {
             const bend = Math.abs(endY - startY) * 0.35;
             const sourceWidth = this.coordinates.toSvgUnits(segment.sourceWidth ?? 0);
             const targetWidth = this.coordinates.toSvgUnits(segment.targetWidth ?? 0);
+            const sourceHeight = this.coordinates.toSvgUnits(segment.sourceHeight ?? 0);
+            const targetHeight = this.coordinates.toSvgUnits(segment.targetHeight ?? 0);
             const controlWidth = Math.max(sourceWidth, targetWidth) * 0.45;
+            const controlHeight = Math.max(sourceHeight, targetHeight) * 0.45;
             const baseColor = d3.hsl(segment.baseColor);
             if (!baseColor) {
                 throw new Error(`Invalid flow particle color: ${segment.baseColor}`);
@@ -51,6 +58,12 @@ export class FlowParticles {
                 const firstControlVariation = (Math.random() - 0.5) * controlWidth;
                 const secondControlVariation = (Math.random() - 0.5) * controlWidth;
                 const endVariation = (Math.random() - 0.5) * targetWidth;
+                const startHeightVariation = (Math.random() - 0.5) * sourceHeight;
+                const firstControlHeightVariation =
+                    (Math.random() - 0.5) * controlHeight;
+                const secondControlHeightVariation =
+                    (Math.random() - 0.5) * controlHeight;
+                const endHeightVariation = (Math.random() - 0.5) * targetHeight;
                 const particleColor = d3
                     .hsl(
                         baseColor.h + (Math.random() - 0.5) * 18,
@@ -69,12 +82,14 @@ export class FlowParticles {
                     .attr("class", "flow-particle-path")
                     .attr(
                         "d",
-                        `M ${startX + startVariation} ${startY} C ${startX + firstControlVariation} ${startY - bend}, ${endX + secondControlVariation} ${endY + bend}, ${endX + endVariation} ${endY}`,
+                        `M ${startX + startVariation} ${startY + startHeightVariation} C ${startX + firstControlVariation} ${startY - bend + firstControlHeightVariation}, ${endX + secondControlVariation} ${endY + bend + secondControlHeightVariation}, ${endX + endVariation} ${endY + endHeightVariation}`,
                     )
                     .node();
                 const particle = this.layer
                     .append("circle")
                     .attr("class", "flow-particle")
+                    .attr("data-flow-segment", segmentIndex)
+                    .style("--flow-opacity", "0")
                     .attr("r", 2.2 + Math.random() * 2.8)
                     .attr("fill", particleColor)
                     .node();
@@ -84,6 +99,7 @@ export class FlowParticles {
                 }
 
                 return {
+                    segmentIndex,
                     path,
                     particle,
                     offset: Math.random(),
@@ -93,6 +109,8 @@ export class FlowParticles {
             });
         });
 
+        this.bindAnchorInteractions();
+
         this.timer = d3.timer((elapsedMilliseconds) => {
             particles.forEach(({ path, particle, offset, speed, opacity }) => {
                 const progress = (elapsedMilliseconds * speed + offset) % 1;
@@ -100,7 +118,7 @@ export class FlowParticles {
                 d3.select(particle)
                     .attr("cx", point.x)
                     .attr("cy", point.y)
-                    .attr("opacity", opacity);
+                    .style("--flow-opacity", opacity);
             });
         });
 
@@ -109,5 +127,71 @@ export class FlowParticles {
 
     destroy(): void {
         this.timer?.stop();
+        this.removeInteractionListeners?.();
+    }
+
+    private bindAnchorInteractions(): void {
+        const canvas = this.layer.node()?.ownerSVGElement;
+        if (!canvas) {
+            return;
+        }
+
+        const hoveredAnchorIds = new Set<string>();
+        const flowParticles = this;
+        const updateVisibility = () => {
+            this.layer
+                .selectAll<SVGCircleElement, unknown>(".flow-particle")
+                .each(function (this: SVGCircleElement) {
+                    const segmentIndex = Number(this.getAttribute("data-flow-segment"));
+                    const segment = flowParticles.segments[segmentIndex];
+                    const isVisible = segment?.anchorIds.some((id) => hoveredAnchorIds.has(id)) ?? false;
+                    d3.select(this).classed("is-visible", isVisible);
+                });
+        };
+        const anchorForTarget = (target: EventTarget | null): Element | undefined => {
+            if (!(target instanceof Element)) {
+                return undefined;
+            }
+            return target.closest(
+                "[data-component], [data-architecture-component], [data-logo-component]",
+            ) ?? undefined;
+        };
+        const entered = (event: Event) => {
+            const anchor = anchorForTarget(event.target);
+            const relatedAnchor = anchorForTarget((event as FocusEvent).relatedTarget);
+            if (anchor && anchor !== relatedAnchor) {
+                const id = anchor.getAttribute("data-component") ??
+                    anchor.getAttribute("data-architecture-component") ??
+                    anchor.getAttribute("data-logo-component");
+                if (id) {
+                    hoveredAnchorIds.add(id);
+                    updateVisibility();
+                }
+            }
+        };
+        const left = (event: Event) => {
+            const anchor = anchorForTarget(event.target);
+            const relatedAnchor = anchorForTarget((event as FocusEvent).relatedTarget);
+            if (anchor && anchor !== relatedAnchor) {
+                const id = anchor.getAttribute("data-component") ??
+                    anchor.getAttribute("data-architecture-component") ??
+                    anchor.getAttribute("data-logo-component");
+                if (id) {
+                    hoveredAnchorIds.delete(id);
+                    updateVisibility();
+                }
+            }
+        };
+
+        canvas.addEventListener("pointerover", entered);
+        canvas.addEventListener("pointerout", left);
+        canvas.addEventListener("focusin", entered);
+        canvas.addEventListener("focusout", left);
+        this.removeInteractionListeners = () => {
+            canvas.removeEventListener("pointerover", entered);
+            canvas.removeEventListener("pointerout", left);
+            canvas.removeEventListener("focusin", entered);
+            canvas.removeEventListener("focusout", left);
+        };
     }
 }

@@ -72,25 +72,6 @@ export const logo: LogoConfiguration = {
     y: -32,
 };
 
-export const flowSegments: FlowSegment[] = [
-    {
-        start: { x: 32.5, y: 113 },
-        end: { x: 32.5, y: 100 },
-        baseColor: "#969390",
-        sourceWidth: 50,
-        targetWidth: 10,
-        particleCount: 64,
-    },
-    {
-        start: { x: 32.5, y: 35 },
-        end: { x: 32.5, y: 22 },
-        baseColor: "#4fb1ce",
-        sourceWidth: 10,
-        targetWidth: 60,
-        particleCount: 64,
-    },
-];
-
 // Keep the diagram editable through this list. Coordinates are millimetres,
 // so changing a block's position does not require reasoning about pixels.
 export const components: ComponentAnchor[] = [
@@ -273,12 +254,12 @@ export const products: ArchitectureComponentAnchor[] = [
         tooltipHeading: "Product Column",
         tooltipText:
             "A product combines the data and frontend building blocks for one reporting use case.",
-        componentIds: ["content_paket_with_text", "vorsystem_with_text"],
+        componentIds: ["content_paket_with_text", "vorsystem_with_text", "superset"],
         x: layout.columns.first + 24,
         y: layout.matrixHeight + layout.productGap,
     },
     {
-        id: "coasti-products",
+        id: "second-product",
         iconId: "box",
         text: "coasti products",
         tooltipHeading: "Coasti Products",
@@ -292,6 +273,7 @@ export const products: ArchitectureComponentAnchor[] = [
             "cp_storage",
             "fachverfahren",
             "fachverfahren_storage",
+            "superset",
         ],
         x: layout.columns.center + 24,
         y: layout.matrixHeight + layout.productGap,
@@ -305,10 +287,125 @@ export const products: ArchitectureComponentAnchor[] = [
         tooltipHeading: "Product Column",
         tooltipText:
             "A product combines the data and frontend building blocks for one reporting use case.",
-        componentIds: ["content_paket_wo_text", "vorsystem_wo_text"],
+        componentIds: ["content_paket_wo_text", "vorsystem_wo_text", "superset"],
         x: layout.columns.third + 24,
         y: layout.matrixHeight + layout.productGap,
     },
+];
+
+export const flowSegments: FlowSegment[] = [
+    // first product
+    {
+        start: { x: 32.5, y: 113 },
+        end: { x: 32.5, y: 100 },
+        baseColor: "#969390",
+        anchorIds: ["vorsystem_with_text", "content_paket_with_text", "first-product"],
+        sourceWidth: 50,
+        targetWidth: 10,
+        particleCount: 64,
+    },
+    {
+        start: { x: 32.5, y: 35 },
+        end: { x: 32.5, y: 22 },
+        baseColor: "#4fb1ce",
+        anchorIds: ["content_paket_with_text", "superset", "first-product"],
+        sourceWidth: 10,
+        targetWidth: 60,
+        particleCount: 64,
+    },
+
+    // second product
+    {
+        start: { x: 105.5, y: 113 },
+        end: { x: 105.5, y: 100 },
+        baseColor: "#969390",
+        anchorIds: ["second-product"],
+        sourceWidth: 50,
+        targetWidth: 10,
+        particleCount: 32,
+    },
+    {
+        start: { x: 105.5, y: 35 },
+        end: { x: 105.5, y: 22 },
+        baseColor: "#4fb1ce",
+        anchorIds: ["superset", "second-product"],
+        sourceWidth: 10,
+        targetWidth: 60,
+        particleCount: 40,
+    },
+    // we overlay two streams with lower counts to change the shape a bit
+    {
+        start: { x: 105.5, y: 113 },
+        end: { x: 105.5, y: 65 },
+        baseColor: "#969390",
+        anchorIds: ["second-product"],
+        sourceWidth: 50,
+        targetWidth: 20,
+        particleCount: 32,
+    },
+    {
+        start: { x: 105.5, y: 90 },
+        end: { x: 105.5, y: 22 },
+        baseColor: "#4fb1ce",
+        anchorIds: ["superset", "second-product"],
+        sourceWidth: 30,
+        targetWidth: 60,
+        particleCount: 40,
+    },
+
+    // third product
+    {
+        start: { x: 178.5, y: 113 },
+        end: { x: 178.5, y: 100 },
+        baseColor: "#969390",
+        anchorIds: ["vorsystem_wo_text", "content_paket_wo_text", "third-product"],
+        sourceWidth: 50,
+        targetWidth: 10,
+        particleCount: 64,
+    },
+    {
+        start: { x: 178.5, y: 35 },
+        end: { x: 178.5, y: 22 },
+        baseColor: "#4fb1ce",
+        anchorIds: ["content_paket_wo_text", "superset", "third-product"],
+        sourceWidth: 10,
+        targetWidth: 60,
+        particleCount: 64,
+    },
+
+    // detailed hovers on content package boxes
+    {
+        // fachverfahren_storage -> cp_storage
+        start: { x: 126, y: 113 },
+        end: { x: 126, y: 97 },
+        baseColor: "#969390",
+        anchorIds: ["cp_ingestion", "fachverfahren_storage", "cp_storage"],
+        sourceWidth: 18,
+        targetWidth: 18,
+        particleCount: 24,
+    },
+    {
+        // fachverfahren -> fachverfahren_storage
+        start: { x: 108, y: 125 },
+        end: { x: 117, y: 125 },
+        baseColor: "#969390",
+        anchorIds: ["fachverfahren", "fachverfahren_storage"],
+        sourceWidth: 4,
+        targetWidth: 4,
+        sourceHeight: 24,
+        targetHeight: 24,
+        particleCount: 40,
+    },
+        {
+            // cp_storage -> superset
+            start: { x: 126, y: 51 },
+            end: { x: 126, y: 22 },
+            baseColor: "#4fb1ce",
+            anchorIds: ["cp_storage"],
+            sourceWidth: 10,
+            targetWidth: 30,
+            particleCount: 64,
+        },
 ];
 
 export function mount(target: string | HTMLElement) {

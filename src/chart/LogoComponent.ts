@@ -73,6 +73,7 @@ export class LogoComponent {
         const logo = this.layer
             .append("g")
             .attr("class", "logo-component")
+            .attr("data-logo-component", "coasti")
             .style("--logo-shift-x", "0px")
             .style("--logo-shift-y", "0px")
             .style("--logo-rotate-x", "0deg")
