@@ -24,6 +24,17 @@ Create a production build:
 npm run build
 ```
 
+To create a completely self-contained HTML file for emailing, run:
+
+```sh
+npm run build:singlefile
+```
+
+This writes `dist-singlefile/index.html`. Send that one file to your colleague;
+it contains the chart's JavaScript, CSS, and SVG assets, so it does not need a
+web server, internet connection, or accompanying asset directory. They can
+open it directly in a modern browser.
+
 Preview the production build locally:
 
 ```sh

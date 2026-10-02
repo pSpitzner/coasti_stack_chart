@@ -1,4 +1,4 @@
-:root {
+.coasti-canvas {
     --coasti-primary-blur: 1.5px;
     --coasti-secondary-blur: 2.5px;
     --coasti-primary-hover-padding: 4px;
@@ -12,23 +12,20 @@
         BlinkMacSystemFont,
         "Segoe UI",
         sans-serif;
+}
+
+/* Demo page and shell. Embedders can provide their own wrapper styles. */
+.coasti-demo-page {
+    margin: 0;
+    min-width: 320px;
     background: #071a20;
 }
 
-/* Global page and chart shell */
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    min-width: 320px;
-}
-
-#app {
+.coasti-stack-demo {
     width: min(100%, 1120px);
     margin: 0 auto;
     padding: 24px;
+    box-sizing: border-box;
 }
 
 .chart-wrapper {
@@ -40,6 +37,7 @@ body {
     width: 100%;
     height: auto;
     overflow: visible;
+    box-sizing: border-box;
 }
 
 /* Canvas backgrounds */
@@ -285,11 +283,11 @@ body {
 
 /* Preserve the wide diagram on small screens instead of shrinking its labels. */
 @media (max-width: 700px) {
-    #app {
+    .coasti-stack-demo {
         min-width: 760px;
     }
 
-    body {
+    .coasti-demo-page {
         overflow-x: auto;
     }
 }
