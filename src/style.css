@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
 .coasti-canvas {
     --coasti-primary-blur: 2.5px;
     --coasti-secondary-blur: 5.0px;
@@ -260,14 +262,15 @@
     position: fixed;
     z-index: 10;
     display: grid;
-    gap: 4px;
-    max-width: 280px;
-    padding: 10px 12px;
-    border-radius: 8px;
+    gap: 8px;
+    max-width: 340px;
+    padding: 14px 16px;
+    border-radius: 10px;
     background: rgba(3, 55, 70, 0.68);
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     color: #fff;
+    font-family: "Archivo", Arial, sans-serif;
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--coasti-transition-duration) ease-out;
@@ -279,12 +282,24 @@
 }
 
 .component-tooltip strong {
-    font-size: 0.85rem;
+    font-family: "Space Grotesk", Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
 }
 .component-tooltip span {
     color: #dcebef;
-    font-size: 0.75rem;
-    line-height: 1.4;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+}
+
+/* Give explicit line breaks a little breathing room so paragraphs read apart. */
+.component-tooltip span br {
+    content: "";
+    display: block;
+    margin-bottom: 0.5em;
 }
 
 /* Preserve the wide diagram on small screens instead of shrinking its labels. */

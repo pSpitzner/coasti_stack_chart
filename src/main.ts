@@ -67,7 +67,7 @@ export const layout = {
 // Brand logo on the top left, has some special hover and logic
 export const logo: LogoConfiguration = {
     tooltipText:
-        "coasti ist eine Software-Harmonie aus verschiedenen open-source Komponenten. Im Kern definiert coasti einen Standard, um die Bauteile so zu strukturieren, dass sie gut zusammenarbeiten.<br/><br/>Um mehr zu erfahren, <b>hovere einfach über die Icons.</b>",
+        "coasti ist eine Software-Harmonie aus verschiedenen Open-Source-Komponenten. Im Kern definiert coasti einen Standard, um die Bauteile so zu strukturieren, dass sie gut zusammenarbeiten.<br/><br/>Um mehr zu erfahren, <b>hovere einfach über die Icons.</b>",
     x: -10,
     y: -32,
 };
@@ -79,7 +79,7 @@ export const components: ComponentAnchor[] = [
         id: "superset",
         tooltipHeading: "Superset",
         tooltipText:
-            "Grafische Oberfläche für Endnutzer:innen. Hier können vorgefertige Berichte angezeigt, oder neue erstellt werden. Dient auch als Berichtsportal, sodass Berichte aus verschiedenen Content-Paketen gesammelt an einem Ort angezeigt werden.<br/>Superset hat ausschließlich Zugriff auf aufbereitete BI-Daten aus den Content-Paketen, nicht auf die Rohdaten des Fachverfahrens.",
+            "Grafische Oberfläche für Endnutzer:innen. Hier können vorgefertige Berichte angezeigt oder neue erstellt werden. Dient auch als Berichtsportal, sodass Berichte aus verschiedenen Content-Paketen gesammelt an einem Ort angezeigt werden.<br/>Superset hat ausschließlich Zugriff auf aufbereitete BI-Daten aus den Content-Paketen, nicht auf die Rohdaten des Fachverfahrens.",
         x: 0,
         y: layout.rows.frontend,
         width: layout.matrixWidth,
@@ -89,7 +89,7 @@ export const components: ComponentAnchor[] = [
         id: "content_paket_with_text",
         tooltipHeading: "Content-Paket",
         tooltipText:
-            "Vollständiges Paket für ein bestimmes Fachverfahren, das BI-Logiken gebündelt bereitstellt. Enthält alle Schritte von der Daten-Anbindung bis zum visuellen Dashboard, und kann direkt eingesetzt werden.<br/>Bezieht Rohdaten aus dem Vorsystem und stellt aufbereitete Daten für Superset bereit.",
+            "Vollständiges Paket für ein bestimmtes Fachverfahren, das BI-Logiken gebündelt bereitstellt. Enthält alle Schritte von der Daten-Anbindung bis zum visuellen Dashboard und kann direkt eingesetzt werden.<br/>Bezieht Rohdaten aus dem Vorsystem und stellt aufbereitete Daten für Superset bereit.",
         x: layout.columns.first,
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
@@ -109,7 +109,7 @@ export const components: ComponentAnchor[] = [
         id: "content_paket_wo_text",
         tooltipHeading: "Weitere Produkte",
         tooltipText:
-            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem Github Repo ein Beispiel für ein Content-Paket.",
+            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem GitHub-Repo ein Beispiel für ein Content-Paket.",
         x: layout.columns.third,
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
@@ -120,7 +120,7 @@ export const components: ComponentAnchor[] = [
         id: "vorsystem_wo_text",
         tooltipHeading: "Weitere Produkte",
         tooltipText:
-            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem Github Repo ein Beispiel für ein Content-Paket.",
+            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem GitHub-Repo ein Beispiel für ein Content-Paket.",
         x: layout.columns.third,
         y: layout.rows.source,
         width: dimensions.columnWidth,
@@ -131,7 +131,7 @@ export const components: ComponentAnchor[] = [
         id: "cp_frontend_content",
         tooltipHeading: "Frontend Content",
         tooltipText:
-            "Zentrale Idee des coasti-Stacks ist, dass alle Inhalte als Quellcode vorliegen, der versionskontrolliert werden kann. So stellen Content-Pakete ihre Berichte als einfache yaml Dateien bereit, die direkt in Superset importiert werden können.",
+            "Zentrale Idee des coasti-Stacks ist, dass alle Inhalte als Quellcode vorliegen, der versionskontrolliert werden kann. So stellen Content-Pakete ihre Berichte als einfache YAML-Dateien bereit, die direkt in Superset importiert werden können.",
         x: layout.columns.center,
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
@@ -141,7 +141,7 @@ export const components: ComponentAnchor[] = [
         id: "cp_orchestration",
         tooltipHeading: "Orchestrierung",
         tooltipText:
-            "Steuert den internen Ablauf des Content-Pakets. Z.b. sollten Transformationen nur ausgeführt werden, wenn die Rohdaten auch erfolgreich kopiert wurden. Die Auswahl des Orchestrierungs-Tools ist den Entwickler:innen des Content-Pakets überlassen. Oft kommt Apache Hamilton zum Einsatz.",
+            "Steuert den internen Ablauf des Content-Pakets.<br/>Z.B. sollten Transformationen nur ausgeführt werden, wenn die Rohdaten auch erfolgreich kopiert wurden. Die Auswahl des Orchestrierungs-Tools ist den Entwickler:innen des Content-Pakets überlassen. Oft kommt Apache Hamilton zum Einsatz.",
         x: layout.columns.center,
         y: layout.rows.transformation + 16 + dimensions.smallGap,
         width: 38,
@@ -161,7 +161,7 @@ export const components: ComponentAnchor[] = [
         id: "cp_ingestion",
         tooltipHeading: "Ingestion",
         tooltipText:
-            'In der sogenannten "Ingestion" werden eine Teilmenge der Rohdaten vom Fachverfahren in eine dedizierte Datenbank kopiert. Dies geschieht meist in Nachtläufen, sodass der Betrieb des Fachverfahrens vom Content-Paket unbeeinflusst bleibt.',
+            'In der sogenannten „Ingestion“ wird eine Teilmenge der Rohdaten vom Fachverfahren in eine dedizierte Datenbank kopiert. Dies geschieht meist in Nachtläufen, sodass der Betrieb des Fachverfahrens vom Content-Paket unbeeinflusst bleibt.',
         x: layout.columns.center,
         y: layout.rows.transformation + (16 + dimensions.smallGap) * 3,
         width: 38,
@@ -171,7 +171,7 @@ export const components: ComponentAnchor[] = [
         id: "cp_storage",
         tooltipHeading: "Storage",
         tooltipText:
-            "Enthält sowohl eine Kopie der benötigten Rohdaten, als auch die aufbereiteten BI Daten. Viele Content-Paketen nutzen eine leichtgewichtige DuckDB, die keinen dedizierten Server benötigt.",
+            "Enthält sowohl eine Kopie der benötigten Rohdaten als auch die aufbereiteten BI-Daten. Viele Content-Pakete nutzen eine leichtgewichtige DuckDB, die keinen dedizierten Server benötigt.",
         x: layout.columns.center + 38 + dimensions.smallGap,
         y: layout.rows.transformation + 16 + dimensions.smallGap,
         width: 24,
@@ -191,7 +191,7 @@ export const components: ComponentAnchor[] = [
         id: "fachverfahren_storage",
         tooltipHeading: "Source Storage",
         tooltipText:
-            "Die Datenbank der Fachverfahren liegt häufig auf eigenen Servern und spiegelt tagesaktuell den Stand der Sachbearbeitung wieder. Content-Pakete greifen ausschließlich lesend zu, und beschränken sich auf eine Teilmenge der Daten.",
+            "Die Datenbank der Fachverfahren liegt häufig auf eigenen Servern und spiegelt tagesaktuell den Stand der Sachbearbeitung wider. Content-Pakete greifen ausschließlich lesend zu und beschränken sich auf eine Teilmenge der Daten.",
         x: layout.columns.center + 38 + dimensions.smallGap,
         y: layout.rows.source,
         width: 24,
@@ -253,10 +253,10 @@ export const products: ArchitectureComponentAnchor[] = [
         id: "first-product",
         iconId: "box",
         text: "coasti Produkt 1",
-        tooltipHeading: "Product Column",
+        tooltipHeading: "Coasti Produkte",
         tooltipText:
-            "Ein coasti-Produkt kombiniert die Daten und Frontend-Bausteine für einen bestimmten Anwendungsfall, und setzt in der Regel auf einem bestehenden Fachverfahren auf.",
-        componentIds: ["content_paket_with_text", "vorsystem_with_text",],
+            "Ein coasti-Produkt kombiniert die Daten und Frontend-Bausteine für einen bestimmten Anwendungsfall und setzt in der Regel auf einem bestehenden Fachverfahren auf.",
+        componentIds: ["content_paket_with_text", "vorsystem_with_text"],
         x: layout.columns.first + 24,
         y: layout.matrixHeight + layout.productGap,
         textPosition: "below",
@@ -268,7 +268,7 @@ export const products: ArchitectureComponentAnchor[] = [
         text: "coasti Produkt 2",
         tooltipHeading: "Coasti Produkte",
         tooltipText:
-            "Ein coasti-Produkt kombiniert die Daten und Frontend-Bausteine für einen bestimmten Anwendungsfall, und setzt in der Regel auf einem bestehenden Fachverfahren auf.",
+            "Ein coasti-Produkt kombiniert die Daten- und Frontend-Bausteine für einen bestimmten Anwendungsfall und setzt in der Regel auf einem bestehenden Fachverfahren auf.",
         componentIds: [
             "cp_frontend_content",
             "cp_orchestration",
@@ -289,8 +289,8 @@ export const products: ArchitectureComponentAnchor[] = [
         text: "coasti Produkt 3",
         tooltipHeading: "Weitere Produkte",
         tooltipText:
-            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem Github Repo ein Beispiel für ein Content-Paket.",
-        componentIds: ["content_paket_wo_text", "vorsystem_wo_text",],
+            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem GitHub-Repo ein Beispiel für ein Content-Paket.",
+        componentIds: ["content_paket_wo_text", "vorsystem_wo_text"],
         group: "product-3",
         x: layout.columns.third + 24,
         y: layout.matrixHeight + layout.productGap,
