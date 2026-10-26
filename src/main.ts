@@ -114,6 +114,7 @@ export const components: ComponentAnchor[] = [
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
         height: dimensions.transformationHeight,
+        group: "product-3",
     },
     {
         id: "vorsystem_wo_text",
@@ -124,6 +125,7 @@ export const components: ComponentAnchor[] = [
         y: layout.rows.source,
         width: dimensions.columnWidth,
         height: dimensions.sourceHeight,
+        group: "product-3",
     },
     {
         id: "cp_frontend_content",
@@ -289,6 +291,7 @@ export const products: ArchitectureComponentAnchor[] = [
         tooltipText:
             "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem Github Repo ein Beispiel für ein Content-Paket.",
         componentIds: ["content_paket_wo_text", "vorsystem_wo_text",],
+        group: "product-3",
         x: layout.columns.third + 24,
         y: layout.matrixHeight + layout.productGap,
         textPosition: "below",

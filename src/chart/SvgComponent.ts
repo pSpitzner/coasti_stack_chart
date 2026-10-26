@@ -2,6 +2,7 @@
 import * as d3 from "d3";
 import { CoordinateSystem } from "./CoordinateSystem";
 import { Tooltip } from "./Tooltip";
+import { setGroupLinked } from "./groupLinking";
 
 export interface ComponentAnchor {
     id: string;
@@ -11,6 +12,8 @@ export interface ComponentAnchor {
     y: number;
     width: number;
     height: number;
+    // Elements sharing a group stay in focus together while any of them is hovered.
+    group?: string;
 }
 const svgFiles = import.meta.glob("../../components/*.svg", {
     eager: true,
@@ -63,6 +66,7 @@ export class SvgComponent {
         const height = this.coordinates.toSvgUnits(this.anchor.height);
 
         this.group
+            .attr("data-hover-group", this.anchor.group ?? null)
             .attr("class", "component")
             .attr("data-component", this.anchor.id)
             .style("--component-x", `${x}px`)
@@ -85,8 +89,17 @@ export class SvgComponent {
             this.layer.classed("has-hovered", hovered);
             const canvas = this.layer.node()?.closest(".coasti-canvas");
             if (canvas) {
-                d3.select(canvas).classed("has-hovered", hovered).classed("has-component-hovered", hovered);
+                d3.select(canvas)
+                    .classed("has-hovered", hovered)
+                    .classed("has-component-hovered", hovered);
+                // A grouped component behaves like an architecture icon hover so
+                // every member of the group blurs the rest of the chart equally.
+                if (this.anchor.group) {
+                    d3.select(canvas).classed("has-architecture-hovered", hovered);
+                    this.layer.classed("has-architecture-hovered", hovered);
+                }
             }
+            setGroupLinked(canvas, this.anchor.group, hovered);
             if (hovered) {
                 if (event) this.tooltip.show(
                     this.tooltipHeading,

@@ -2,6 +2,7 @@
 import * as d3 from "d3";
 import { CoordinateSystem } from "./CoordinateSystem";
 import { Tooltip } from "./Tooltip";
+import { setGroupLinked } from "./groupLinking";
 
 const iconFiles = import.meta.glob("../../icons/*.svg", {
     eager: true,
@@ -26,6 +27,8 @@ export interface ArchitectureComponentAnchor {
     textPosition?: ArchitectureTextPosition;
     textAlign?: ArchitectureTextAlign;
     textGap?: number;
+    // Elements sharing a group stay in focus together while any of them is hovered.
+    group?: string;
 }
 
 const defaultArchitectureOptions = {
@@ -96,6 +99,7 @@ export class ArchitectureComponent {
         });
 
         this.group
+            .attr("data-hover-group", this.anchor.group ?? null)
             .attr("class", "architecture-component")
             .attr("data-architecture-component", this.anchor.id)
             .attr("role", "group")
@@ -165,6 +169,7 @@ export class ArchitectureComponent {
             const canvas = this.group.node()?.closest(".coasti-canvas");
             if (canvas) {
                 d3.select(canvas).classed("has-architecture-hovered", hovered);
+            setGroupLinked(canvas, this.anchor.group, hovered);
             }
             this.componentLayer.classed("has-architecture-hovered", hovered);
             const linkedComponentIds = this.anchor.componentIds;

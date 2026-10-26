@@ -156,15 +156,36 @@ export class FlowParticles {
                 "[data-component], [data-architecture-component], [data-logo-component]",
             ) ?? undefined;
         };
+        const idForAnchor = (anchor: Element): string | undefined =>
+            anchor.getAttribute("data-component") ??
+            anchor.getAttribute("data-architecture-component") ??
+            anchor.getAttribute("data-logo-component") ??
+            undefined;
+        // Hovering any member of a group lights the flows of every member, so the
+        // group behaves as a single entity.
+        const idsForAnchor = (anchor: Element): string[] => {
+            const id = idForAnchor(anchor);
+            if (!id) {
+                return [];
+            }
+            const group = anchor.getAttribute("data-hover-group");
+            if (!group) {
+                return [id];
+            }
+            const groupIds = Array.from(
+                canvas.querySelectorAll<Element>(`[data-hover-group="${group}"]`),
+            )
+                .map(idForAnchor)
+                .filter((value): value is string => Boolean(value));
+            return groupIds.length > 0 ? groupIds : [id];
+        };
         const entered = (event: Event) => {
             const anchor = anchorForTarget(event.target);
             const relatedAnchor = anchorForTarget((event as FocusEvent).relatedTarget);
             if (anchor && anchor !== relatedAnchor) {
-                const id = anchor.getAttribute("data-component") ??
-                    anchor.getAttribute("data-architecture-component") ??
-                    anchor.getAttribute("data-logo-component");
-                if (id) {
-                    hoveredAnchorIds.add(id);
+                const ids = idsForAnchor(anchor);
+                if (ids.length > 0) {
+                    ids.forEach((id) => hoveredAnchorIds.add(id));
                     updateVisibility();
                 }
             }
@@ -173,11 +194,9 @@ export class FlowParticles {
             const anchor = anchorForTarget(event.target);
             const relatedAnchor = anchorForTarget((event as FocusEvent).relatedTarget);
             if (anchor && anchor !== relatedAnchor) {
-                const id = anchor.getAttribute("data-component") ??
-                    anchor.getAttribute("data-architecture-component") ??
-                    anchor.getAttribute("data-logo-component");
-                if (id) {
-                    hoveredAnchorIds.delete(id);
+                const ids = idsForAnchor(anchor);
+                if (ids.length > 0) {
+                    ids.forEach((id) => hoveredAnchorIds.delete(id));
                     updateVisibility();
                 }
             }

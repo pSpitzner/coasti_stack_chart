@@ -1,6 +1,6 @@
 .coasti-canvas {
-    --coasti-primary-blur: 1.5px;
-    --coasti-secondary-blur: 2.5px;
+    --coasti-primary-blur: 2.5px;
+    --coasti-secondary-blur: 5.0px;
     --coasti-primary-hover-padding: 4px;
     --coasti-secondary-hover-padding: 2px;
     --coasti-transition-duration: 0.36s;
@@ -155,7 +155,8 @@
         filter var(--coasti-transition-duration) ease;
 }
 
-.architecture-component.is-hovered {
+.architecture-component.is-hovered,
+.architecture-component.is-group-linked {
     transform: scale(1.06);
 }
 
@@ -204,24 +205,27 @@
         height var(--coasti-transition-duration) ease;
 }
 
-.component-layer.has-hovered .component:not(.is-hovered) {
+.component-layer.has-hovered .component:not(.is-hovered):not(.is-group-linked) {
     filter: blur(var(--coasti-primary-blur));
 }
 
-.component-layer.has-architecture-hovered .component:not(.is-architecture-linked) {
+.component-layer.has-architecture-hovered
+    .component:not(.is-architecture-linked):not(.is-group-linked) {
     filter: blur(var(--coasti-secondary-blur));
 }
 
 .architecture-component-layer.has-architecture-hovered
-    .architecture-component:not(.is-hovered) {
+    .architecture-component:not(.is-hovered):not(.is-group-linked) {
     filter: blur(var(--coasti-secondary-blur));
 }
 
-.coasti-canvas.has-architecture-hovered .architecture-component:not(.is-hovered) {
+.coasti-canvas.has-architecture-hovered
+    .architecture-component:not(.is-hovered):not(.is-group-linked) {
     filter: blur(var(--coasti-secondary-blur));
 }
 
-.coasti-canvas.has-component-hovered .architecture-component {
+.coasti-canvas.has-component-hovered
+    .architecture-component:not(.is-group-linked) {
     filter: blur(var(--coasti-secondary-blur));
 }
 
@@ -230,13 +234,15 @@
     filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.16));
 }
 
-.component.is-hovered {
+.component.is-hovered,
+.component.is-group-linked {
     --component-hover-padding: var(--primary-hover-padding);
     filter: drop-shadow(0 5px 7px rgba(0, 0, 0, 0.28));
 }
 
 .component.is-hovered .component-image,
-.component.is-architecture-linked .component-image {
+.component.is-architecture-linked .component-image,
+.component.is-group-linked .component-image {
     x: calc(var(--component-hover-padding) * -1);
     y: calc(var(--component-hover-padding) * -1);
     width: calc(
