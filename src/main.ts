@@ -67,7 +67,7 @@ export const layout = {
 // Brand logo on the top left, has some special hover and logic
 export const logo: LogoConfiguration = {
     tooltipText:
-        "coasti is, in essence, just a standard. It is the glue that defines how to structure components, docker containers, and products, so that they can play nice together.<br><br><b>Hover over icons</b> to find out more.",
+        "coasti ist eine Software-Harmonie aus verschiedenen open-source Komponenten. Im Kern definiert coasti einen Standard, um die Bauteile so zu strukturieren, dass sie gut zusammenarbeiten.<br/><br/>Um mehr zu erfahren, <b>hovere einfach über die Icons.</b>",
     x: -10,
     y: -32,
 };
@@ -79,7 +79,7 @@ export const components: ComponentAnchor[] = [
         id: "superset",
         tooltipHeading: "Superset",
         tooltipText:
-            "Provides the dashboards and charts that users explore. It reads the reporting models produced by the data pipeline.",
+            "Grafische Oberfläche für Endnutzer:innen. Hier können vorgefertige Berichte angezeigt, oder neue erstellt werden. Dient auch als Berichtsportal, sodass Berichte aus verschiedenen Content-Paketen gesammelt an einem Ort angezeigt werden.<br/>Superset hat ausschließlich Zugriff auf aufbereitete BI-Daten aus den Content-Paketen, nicht auf die Rohdaten des Fachverfahrens.",
         x: 0,
         y: layout.rows.frontend,
         width: layout.matrixWidth,
@@ -87,9 +87,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "content_paket_with_text",
-        tooltipHeading: "Content Package",
+        tooltipHeading: "Content-Paket",
         tooltipText:
-            "A reusable product that bundles ingestion, storage, transformations, orchestration, and Superset content into one installable unit.",
+            "Vollständiges Paket für ein bestimmes Fachverfahren, das BI-Logiken gebündelt bereitstellt. Enthält alle Schritte von der Daten-Anbindung bis zum visuellen Dashboard, und kann direkt eingesetzt werden.<br/>Bezieht Rohdaten aus dem Vorsystem und stellt aufbereitete Daten für Superset bereit.",
         x: layout.columns.first,
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
@@ -97,9 +97,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "vorsystem_with_text",
-        tooltipHeading: "Source System",
+        tooltipHeading: "Vorsystem",
         tooltipText:
-            "Operational applications provide the raw data. Ingestion copies that data without changing it, keeping source systems isolated from BI workloads.",
+            "Vorsysteme oder Fachverfahren werden zur täglichen Sachbearbeitung verwendet. Hier entstehen die Rohdaten, die als Grundlage für das BI-Content-Paket dienen.",
         x: layout.columns.first,
         y: layout.rows.source,
         width: dimensions.columnWidth,
@@ -107,9 +107,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "content_paket_wo_text",
-        tooltipHeading: "More Products",
+        tooltipHeading: "Weitere Produkte",
         tooltipText:
-            "coasti scales horzitonally: Everyone can build an contribute products, following the same recipe.",
+            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem Github Repo ein Beispiel für ein Content-Paket.",
         x: layout.columns.third,
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
@@ -117,9 +117,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "vorsystem_wo_text",
-        tooltipHeading: "More Source Systems",
+        tooltipHeading: "Weitere Produkte",
         tooltipText:
-            "coasti scales horzitonally: Everyone can build an contribute products, following the same recipe.",
+            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem Github Repo ein Beispiel für ein Content-Paket.",
         x: layout.columns.third,
         y: layout.rows.source,
         width: dimensions.columnWidth,
@@ -129,7 +129,7 @@ export const components: ComponentAnchor[] = [
         id: "cp_frontend_content",
         tooltipHeading: "Frontend Content",
         tooltipText:
-            "Contains Superset dashboards, charts, and datasets as versioned files. The installer loads them into Superset so deployments stay reproducible.",
+            "Zentrale Idee des coasti-Stacks ist, dass alle Inhalte als Quellcode vorliegen, der versionskontrolliert werden kann. So stellen Content-Pakete ihre Berichte als einfache yaml Dateien bereit, die direkt in Superset importiert werden können.",
         x: layout.columns.center,
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
@@ -137,9 +137,9 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "cp_orchestration",
-        tooltipHeading: "Orchestration",
+        tooltipHeading: "Orchestrierung",
         tooltipText:
-            "Coordinates ingestion and transformation as one repeatable Python pipeline. A refresh can be run as a single command instead of manual steps.",
+            "Steuert den internen Ablauf des Content-Pakets. Z.b. sollten Transformationen nur ausgeführt werden, wenn die Rohdaten auch erfolgreich kopiert wurden. Die Auswahl des Orchestrierungs-Tools ist den Entwickler:innen des Content-Pakets überlassen. Oft kommt Apache Hamilton zum Einsatz.",
         x: layout.columns.center,
         y: layout.rows.transformation + 16 + dimensions.smallGap,
         width: 38,
@@ -149,7 +149,7 @@ export const components: ComponentAnchor[] = [
         id: "cp_transformation",
         tooltipHeading: "Transformation",
         tooltipText:
-            "dbt models read raw Parquet files and produce clean reporting models. Superset consumes these models without depending on a specific compute engine.",
+            "Kernstück des Content-Pakets. Hier ist die BI-Logik implementiert: Rohdaten werden bereinigt, verknüpft und aggregiert. Am Ende entstehen aufbereitete Kennzahlen und Dimensionen als Quelldaten für Berichte.",
         x: layout.columns.center,
         y: layout.rows.transformation + (16 + dimensions.smallGap) * 2,
         width: 38,
@@ -159,7 +159,7 @@ export const components: ComponentAnchor[] = [
         id: "cp_ingestion",
         tooltipHeading: "Ingestion",
         tooltipText:
-            "Fetches data from source systems and writes it as raw Parquet. Keeping ingestion separate preserves the original data for rebuilding models.",
+            'In der sogenannten "Ingestion" werden eine Teilmenge der Rohdaten vom Fachverfahren in eine dedizierte Datenbank kopiert. Dies geschieht meist in Nachtläufen, sodass der Betrieb des Fachverfahrens vom Content-Paket unbeeinflusst bleibt.',
         x: layout.columns.center,
         y: layout.rows.transformation + (16 + dimensions.smallGap) * 3,
         width: 38,
@@ -169,7 +169,7 @@ export const components: ComponentAnchor[] = [
         id: "cp_storage",
         tooltipHeading: "Storage",
         tooltipText:
-            "Holds raw Parquet files on local storage or S3. It separates durable data from the transformation and presentation layers.",
+            "Enthält sowohl eine Kopie der benötigten Rohdaten, als auch die aufbereiteten BI Daten. Viele Content-Paketen nutzen eine leichtgewichtige DuckDB, die keinen dedizierten Server benötigt.",
         x: layout.columns.center + 38 + dimensions.smallGap,
         y: layout.rows.transformation + 16 + dimensions.smallGap,
         width: 24,
@@ -179,7 +179,7 @@ export const components: ComponentAnchor[] = [
         id: "fachverfahren",
         tooltipHeading: "Fachverfahren",
         tooltipText:
-            "Operational source applications where business data is created. The backend reads from them during ingestion, while the frontend never connects directly.",
+            "Die meisten Fachverfahren bestehen aus einer Benutzeroberfläche und legen ihre Daten in einer Datenbank ab. Beispiele für Fachverfahren sind HuH (Haushalt), Lämmkomm Lissa (Soziales), Prosoz (Jugend).",
         x: layout.columns.center,
         y: layout.rows.source,
         width: 38,
@@ -189,7 +189,7 @@ export const components: ComponentAnchor[] = [
         id: "fachverfahren_storage",
         tooltipHeading: "Source Storage",
         tooltipText:
-            "A source-side data boundary for the Fachverfahren layer. Data is copied from here into the BI pipeline instead of repeatedly querying the operational system.",
+            "Die Datenbank der Fachverfahren liegt häufig auf eigenen Servern und spiegelt tagesaktuell den Stand der Sachbearbeitung wieder. Content-Pakete greifen ausschließlich lesend zu, und beschränken sich auf eine Teilmenge der Daten.",
         x: layout.columns.center + 38 + dimensions.smallGap,
         y: layout.rows.source,
         width: 24,
@@ -250,21 +250,23 @@ export const products: ArchitectureComponentAnchor[] = [
     {
         id: "first-product",
         iconId: "box",
-        text: "",
+        text: "coasti Produkt 1",
         tooltipHeading: "Product Column",
         tooltipText:
-            "A product combines the data and frontend building blocks for one reporting use case.",
-        componentIds: ["content_paket_with_text", "vorsystem_with_text", "superset"],
+            "Ein coasti-Produkt kombiniert die Daten und Frontend-Bausteine für einen bestimmten Anwendungsfall, und setzt in der Regel auf einem bestehenden Fachverfahren auf.",
+        componentIds: ["content_paket_with_text", "vorsystem_with_text",],
         x: layout.columns.first + 24,
         y: layout.matrixHeight + layout.productGap,
+        textPosition: "below",
+        textAlign: "center",
     },
     {
         id: "second-product",
         iconId: "box",
-        text: "coasti products",
-        tooltipHeading: "Coasti Products",
+        text: "coasti Produkt 2",
+        tooltipHeading: "Coasti Produkte",
         tooltipText:
-            "Coasti products package reusable data, transformation, orchestration, and frontend components.",
+            "Ein coasti-Produkt kombiniert die Daten und Frontend-Bausteine für einen bestimmten Anwendungsfall, und setzt in der Regel auf einem bestehenden Fachverfahren auf.",
         componentIds: [
             "cp_frontend_content",
             "cp_orchestration",
@@ -273,7 +275,6 @@ export const products: ArchitectureComponentAnchor[] = [
             "cp_storage",
             "fachverfahren",
             "fachverfahren_storage",
-            "superset",
         ],
         x: layout.columns.center + 24,
         y: layout.matrixHeight + layout.productGap,
@@ -283,13 +284,15 @@ export const products: ArchitectureComponentAnchor[] = [
     {
         id: "third-product",
         iconId: "box",
-        text: "",
-        tooltipHeading: "Product Column",
+        text: "coasti Produkt 3",
+        tooltipHeading: "Weitere Produkte",
         tooltipText:
-            "A product combines the data and frontend building blocks for one reporting use case.",
-        componentIds: ["content_paket_wo_text", "vorsystem_wo_text", "superset"],
+            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem Github Repo ein Beispiel für ein Content-Paket.",
+        componentIds: ["content_paket_wo_text", "vorsystem_wo_text",],
         x: layout.columns.third + 24,
         y: layout.matrixHeight + layout.productGap,
+        textPosition: "below",
+        textAlign: "center",
     },
 ];
 
