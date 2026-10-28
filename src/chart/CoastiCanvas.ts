@@ -6,6 +6,10 @@ import { ArchitectureComponent, type ArchitectureComponentAnchor } from "./Archi
 import { LogoComponent, type LogoConfiguration } from "./LogoComponent";
 import { Tooltip } from "./Tooltip";
 import { FlowParticles, type FlowSegment } from "./FlowParticles";
+import {
+    CombinedHoverRegion,
+    type CombinedHoverRegionAnchor,
+} from "./CombinedHoverRegion";
 
 export class CoastiCanvas {
     private readonly coordinates: CoordinateSystem;
@@ -16,6 +20,7 @@ export class CoastiCanvas {
     private readonly products: ArchitectureComponentAnchor[];
     private readonly logoConfiguration: LogoConfiguration | undefined;
     private readonly flowSegments: FlowSegment[];
+    private readonly hoverRegions: CombinedHoverRegionAnchor[];
     private readonly padding: CanvasPadding;
 
     constructor(
@@ -27,6 +32,7 @@ export class CoastiCanvas {
         products: ArchitectureComponentAnchor[],
         logoConfiguration: LogoConfiguration | undefined,
         flowSegments: FlowSegment[],
+        hoverRegions: CombinedHoverRegionAnchor[],
     ) {
         this.wrapper = wrapper;
         this.layout = layout;
@@ -35,6 +41,7 @@ export class CoastiCanvas {
         this.products = products;
         this.logoConfiguration = logoConfiguration;
         this.flowSegments = flowSegments;
+        this.hoverRegions = hoverRegions;
         this.padding = dimensions.padding;
         this.coordinates = new CoordinateSystem(dimensions);
     }
@@ -118,6 +125,22 @@ export class CoastiCanvas {
                 this.coordinates,
                 tooltip,
                 componentLayer,
+            ).render();
+        });
+        // Regions sit on top of the building blocks so the whole area, gaps
+        // included, acts as a single hover target.
+        const hoverRegionLayer = svg
+            .append("g")
+            .attr("class", "hover-region-layer");
+        this.hoverRegions.forEach((region) => {
+            new CombinedHoverRegion(
+                hoverRegionLayer,
+                componentLayer,
+                region,
+                this.components,
+                [...this.servers, ...this.products],
+                this.coordinates,
+                tooltip,
             ).render();
         });
     }
