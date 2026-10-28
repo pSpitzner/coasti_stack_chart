@@ -72,6 +72,14 @@ export const logo: LogoConfiguration = {
     y: -32,
 };
 
+// The right-hand "Weitere Pakete" column stacks three boxes in the
+// transformation region (16 + 3 + 35 + 3 + 16 = 73mm) and one box in the source
+// region, mirroring the center product's small-gap rhythm.
+const weiterePaketeTooltip =
+    "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Pakete bauen und beitragen. Die Komponenten eines Pakets lassen sich frei zusammenstellen. Als Starthilfe findet sich in unserem GitHub-Repo ein Beispiel für ein Content-Paket.";
+const weitereVorsystemTooltip =
+    "Vorsysteme oder Fachverfahren werden zur täglichen Sachbearbeitung verwendet. Hier entstehen die Rohdaten, die als Grundlage für das BI-Content-Paket dienen.";
+
 // Keep the diagram editable through this list. Coordinates are millimetres,
 // so changing a block's position does not require reasoning about pixels.
 export const components: ComponentAnchor[] = [
@@ -106,21 +114,39 @@ export const components: ComponentAnchor[] = [
         height: dimensions.sourceHeight,
     },
     {
-        id: "content_paket_wo_text",
-        tooltipHeading: "Weitere Produkte",
-        tooltipText:
-            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem GitHub-Repo ein Beispiel für ein Content-Paket.",
+        id: "weitere_0",
+        tooltipHeading: "Weitere Pakete",
+        tooltipText: weiterePaketeTooltip,
         x: layout.columns.third,
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
-        height: dimensions.transformationHeight,
+        height: 16,
         group: "product-3",
     },
     {
-        id: "vorsystem_wo_text",
-        tooltipHeading: "Weitere Produkte",
-        tooltipText:
-            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem GitHub-Repo ein Beispiel für ein Content-Paket.",
+        id: "weitere_1",
+        tooltipHeading: "Weitere Pakete",
+        tooltipText: weiterePaketeTooltip,
+        x: layout.columns.third,
+        y: layout.rows.transformation + 16 + dimensions.smallGap,
+        width: dimensions.columnWidth,
+        height: dimensions.transformationHeight - 16 * 2 - dimensions.smallGap * 2,
+        group: "product-3",
+    },
+    {
+        id: "weitere_2",
+        tooltipHeading: "Weitere Pakete",
+        tooltipText: weiterePaketeTooltip,
+        x: layout.columns.third,
+        y: layout.rows.transformation + dimensions.transformationHeight - 16,
+        width: dimensions.columnWidth,
+        height: 16,
+        group: "product-3",
+    },
+    {
+        id: "weitere_3",
+        tooltipHeading: "Vorsystem",
+        tooltipText: weitereVorsystemTooltip,
         x: layout.columns.third,
         y: layout.rows.source,
         width: dimensions.columnWidth,
@@ -161,7 +187,7 @@ export const components: ComponentAnchor[] = [
         id: "cp_ingestion",
         tooltipHeading: "Ingestion",
         tooltipText:
-            'In der sogenannten „Ingestion“ wird eine Teilmenge der Rohdaten vom Fachverfahren in eine dedizierte Datenbank kopiert. Dies geschieht meist in Nachtläufen, sodass der Betrieb des Fachverfahrens vom Content-Paket unbeeinflusst bleibt.',
+            "In der sogenannten „Ingestion“ wird eine Teilmenge der Rohdaten vom Fachverfahren in eine dedizierte Datenbank kopiert. Dies geschieht meist in Nachtläufen, sodass der Betrieb des Fachverfahrens vom Content-Paket unbeeinflusst bleibt.",
         x: layout.columns.center,
         y: layout.rows.transformation + (16 + dimensions.smallGap) * 3,
         width: 38,
@@ -220,7 +246,9 @@ export const servers: ArchitectureComponentAnchor[] = [
             "Runs ingestion, storage, transformations, and orchestration. It prepares reporting data without exposing source systems to the frontend.",
         componentIds: [
             "content_paket_with_text",
-            "content_paket_wo_text",
+            "weitere_0",
+            "weitere_1",
+            "weitere_2",
             "cp_frontend_content",
             "cp_orchestration",
             "cp_transformation",
@@ -239,7 +267,7 @@ export const servers: ArchitectureComponentAnchor[] = [
             "Hosts operational data used by the BI pipeline. The backend copies data from here during ingestion.",
         componentIds: [
             "vorsystem_with_text",
-            "vorsystem_wo_text",
+            "weitere_3",
             "fachverfahren",
             "fachverfahren_storage",
         ],
@@ -256,7 +284,7 @@ export const products: ArchitectureComponentAnchor[] = [
         tooltipHeading: "Coasti Produkte",
         tooltipText:
             "Ein coasti-Produkt kombiniert die Daten und Frontend-Bausteine für einen bestimmten Anwendungsfall und setzt in der Regel auf einem bestehenden Fachverfahren auf.",
-        componentIds: ["content_paket_with_text", "vorsystem_with_text"],
+        componentIds: ["content_paket_with_text", "vorsystem_with_text", "superset"],
         x: layout.columns.first + 24,
         y: layout.matrixHeight + layout.productGap,
         textPosition: "below",
@@ -277,6 +305,7 @@ export const products: ArchitectureComponentAnchor[] = [
             "cp_storage",
             "fachverfahren",
             "fachverfahren_storage",
+            "superset",
         ],
         x: layout.columns.center + 24,
         y: layout.matrixHeight + layout.productGap,
@@ -290,7 +319,7 @@ export const products: ArchitectureComponentAnchor[] = [
         tooltipHeading: "Weitere Produkte",
         tooltipText:
             "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem GitHub-Repo ein Beispiel für ein Content-Paket.",
-        componentIds: ["content_paket_wo_text", "vorsystem_wo_text"],
+        componentIds: ["weitere_0", "weitere_1", "weitere_2", "weitere_3", "superset"],
         group: "product-3",
         x: layout.columns.third + 24,
         y: layout.matrixHeight + layout.productGap,
@@ -364,7 +393,7 @@ export const flowSegments: FlowSegment[] = [
         start: { x: 178.5, y: 113 },
         end: { x: 178.5, y: 100 },
         baseColor: "#969390",
-        anchorIds: ["vorsystem_wo_text", "content_paket_wo_text", "third-product"],
+        anchorIds: ["weitere_3", "weitere_1", "third-product"],
         sourceWidth: 50,
         targetWidth: 10,
         particleCount: 64,
@@ -373,7 +402,7 @@ export const flowSegments: FlowSegment[] = [
         start: { x: 178.5, y: 35 },
         end: { x: 178.5, y: 22 },
         baseColor: "#4fb1ce",
-        anchorIds: ["content_paket_wo_text", "superset", "third-product"],
+        anchorIds: ["weitere_1", "superset", "third-product"],
         sourceWidth: 10,
         targetWidth: 60,
         particleCount: 64,
