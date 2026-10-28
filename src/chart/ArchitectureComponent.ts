@@ -17,8 +17,10 @@ export interface ArchitectureComponentAnchor {
     id: string;
     iconId: string;
     text: string;
+    // Optional: icons covered by a combined hover region leave the tooltip to
+    // that region instead of defining their own.
     tooltipHeading?: string;
-    tooltipText: string;
+    tooltipText?: string;
     componentIds: string[];
     x: number;
     y: number;
@@ -181,20 +183,22 @@ export class ArchitectureComponent {
                     );
                 });
             if (hovered) {
-                if (event) {
-                    this.tooltip.show(
-                        this.anchor.tooltipHeading,
-                        this.anchor.tooltipText,
-                        event,
-                        -140,
-                        28,
-                    );
-                } else if (this.group.node()) {
-                    this.tooltip.showForElement(
-                        this.anchor.tooltipHeading,
-                        this.anchor.tooltipText,
-                        this.group.node()!,
-                    );
+                if (this.anchor.tooltipText !== undefined) {
+                    if (event) {
+                        this.tooltip.show(
+                            this.anchor.tooltipHeading,
+                            this.anchor.tooltipText,
+                            event,
+                            -140,
+                            28,
+                        );
+                    } else if (this.group.node()) {
+                        this.tooltip.showForElement(
+                            this.anchor.tooltipHeading,
+                            this.anchor.tooltipText,
+                            this.group.node()!,
+                        );
+                    }
                 }
             } else {
                 this.tooltip.hide();

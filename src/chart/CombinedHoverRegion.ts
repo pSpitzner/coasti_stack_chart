@@ -16,6 +16,9 @@ export interface CombinedHoverRegionAnchor {
     // Architecture icons (servers, product markers) to include as well. Their
     // rendered hit area is used, so labels are covered too.
     architectureComponentIds?: string[];
+    // Components that are focused (but not part of the hit area) while the
+    // region is hovered, e.g. the shared Superset frontend.
+    linkedComponentIds?: string[];
     // Hover group that stays active while the pointer is anywhere in the region.
     group: string;
     // Single tooltip for the whole region. Members do not define their own.
@@ -94,12 +97,7 @@ export class CombinedHoverRegion {
             return this;
         }
 
-        // The region covers its architecture icons, so it also takes over the
-        // components those icons normally highlight (e.g. the shared Superset
-        // frontend). Those are focused but are not part of the hit area.
-        const linkedComponentIds = new Set(
-            architectureMembers.flatMap((component) => component.componentIds),
-        );
+        const linkedComponentIds = new Set(this.region.linkedComponentIds ?? []);
 
         const left = Math.min(...bounds.map((bound) => bound.x));
         const top = Math.min(...bounds.map((bound) => bound.y));
@@ -119,16 +117,14 @@ export class CombinedHoverRegion {
             .attr("aria-label", this.region.tooltipText);
 
         const setHovered = (hovered: boolean) => {
-            // A grouped region behaves like an architecture hover: every member
-            // of the group stays in focus while the rest of the chart blurs.
-            this.componentLayer.classed("has-hovered", hovered);
+            // The region behaves like an architecture hover: the group and any
+            // linked components stay in focus while the rest of the chart blurs.
+            // `has-hovered` is deliberately not set: its blur rule does not
+            // exempt `is-architecture-linked` components such as Superset.
             this.componentLayer.classed("has-architecture-hovered", hovered);
             const canvas = this.layer.node()?.closest(".coasti-canvas");
             if (canvas) {
-                d3.select(canvas)
-                    .classed("has-hovered", hovered)
-                    .classed("has-component-hovered", hovered)
-                    .classed("has-architecture-hovered", hovered);
+                d3.select(canvas).classed("has-architecture-hovered", hovered);
             }
             setGroupLinked(canvas, this.region.group, hovered);
             if (linkedComponentIds.size > 0) {

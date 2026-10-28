@@ -6,8 +6,10 @@ import { setGroupLinked } from "./groupLinking";
 
 export interface ComponentAnchor {
     id: string;
+    // Optional: components that are covered by a combined hover region leave
+    // the tooltip to that region instead of defining their own.
     tooltipHeading?: string;
-    tooltipText: string;
+    tooltipText?: string;
     x: number;
     y: number;
     width: number;
@@ -40,7 +42,7 @@ export class SvgComponent {
     private readonly coordinates: CoordinateSystem;
     private readonly tooltip: Tooltip;
     private readonly tooltipHeading: string | undefined;
-    private readonly tooltipText: string;
+    private readonly tooltipText: string | undefined;
 
     constructor(
         layer: d3.Selection<SVGGElement, unknown, null, undefined>,
@@ -48,7 +50,7 @@ export class SvgComponent {
         coordinates: CoordinateSystem,
         tooltip: Tooltip,
         tooltipHeading: string | undefined,
-        tooltipText: string,
+        tooltipText: string | undefined,
     ) {
         this.anchor = anchor;
         this.coordinates = coordinates;
@@ -101,14 +103,16 @@ export class SvgComponent {
             }
             setGroupLinked(canvas, this.anchor.group, hovered);
             if (hovered) {
-                if (event) this.tooltip.show(
-                    this.tooltipHeading,
-                    this.tooltipText,
-                    event,
-                    -20,
-                    28,
-                );
-                else if (this.group.node()) this.tooltip.showForElement(this.tooltipHeading, this.tooltipText, this.group.node()!);
+                if (this.tooltipText !== undefined) {
+                    if (event) this.tooltip.show(
+                        this.tooltipHeading,
+                        this.tooltipText,
+                        event,
+                        -20,
+                        28,
+                    );
+                    else if (this.group.node()) this.tooltip.showForElement(this.tooltipHeading, this.tooltipText, this.group.node()!);
+                }
             } else {
                 this.tooltip.hide();
             }

@@ -257,6 +257,14 @@
     );
 }
 
+/* One transparent hit area over several building blocks, gaps included, so the
+   group stays highlighted while the pointer moves between its rows. */
+.component-hover-region {
+    fill: transparent;
+    pointer-events: all;
+    cursor: pointer;
+}
+
 /* Shared tooltip */
 .component-tooltip {
     position: fixed;

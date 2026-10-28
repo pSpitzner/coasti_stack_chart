@@ -6,6 +6,7 @@ import type { CanvasPadding } from "./chart/CoordinateSystem";
 import type { LogoConfiguration } from "./chart/LogoComponent";
 import type { ComponentAnchor } from "./chart/SvgComponent";
 import type { FlowSegment } from "./chart/FlowParticles";
+import type { CombinedHoverRegionAnchor } from "./chart/CombinedHoverRegion";
 
 export const dimensions = {
     // Width of one product column in the reference drawing.
@@ -77,8 +78,6 @@ export const logo: LogoConfiguration = {
 // region, mirroring the center product's small-gap rhythm.
 const weiterePaketeTooltip =
     "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Pakete bauen und beitragen. Die Komponenten eines Pakets lassen sich frei zusammenstellen. Als Starthilfe findet sich in unserem GitHub-Repo ein Beispiel für ein Content-Paket.";
-const weitereVorsystemTooltip =
-    "Vorsysteme oder Fachverfahren werden zur täglichen Sachbearbeitung verwendet. Hier entstehen die Rohdaten, die als Grundlage für das BI-Content-Paket dienen.";
 
 // Keep the diagram editable through this list. Coordinates are millimetres,
 // so changing a block's position does not require reasoning about pixels.
@@ -115,8 +114,6 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "weitere_0",
-        tooltipHeading: "Weitere Pakete",
-        tooltipText: weiterePaketeTooltip,
         x: layout.columns.third,
         y: layout.rows.transformation,
         width: dimensions.columnWidth,
@@ -125,8 +122,6 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "weitere_1",
-        tooltipHeading: "Weitere Pakete",
-        tooltipText: weiterePaketeTooltip,
         x: layout.columns.third,
         y: layout.rows.transformation + 16 + dimensions.smallGap,
         width: dimensions.columnWidth,
@@ -135,8 +130,6 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "weitere_2",
-        tooltipHeading: "Weitere Pakete",
-        tooltipText: weiterePaketeTooltip,
         x: layout.columns.third,
         y: layout.rows.transformation + dimensions.transformationHeight - 16,
         width: dimensions.columnWidth,
@@ -145,8 +138,6 @@ export const components: ComponentAnchor[] = [
     },
     {
         id: "weitere_3",
-        tooltipHeading: "Vorsystem",
-        tooltipText: weitereVorsystemTooltip,
         x: layout.columns.third,
         y: layout.rows.source,
         width: dimensions.columnWidth,
@@ -316,9 +307,6 @@ export const products: ArchitectureComponentAnchor[] = [
         id: "third-product",
         iconId: "box",
         text: "coasti Produkt 3",
-        tooltipHeading: "Weitere Produkte",
-        tooltipText:
-            "coasti skaliert ganz natürlich in die Breite: Jede:r kann eigene Produkte bauen und beitragen. Als Starthilfe findet sich in unserem GitHub-Repo ein Beispiel für ein Content-Paket.",
         componentIds: ["weitere_0", "weitere_1", "weitere_2", "weitere_3", "superset"],
         group: "product-3",
         x: layout.columns.third + 24,
@@ -388,24 +376,44 @@ export const flowSegments: FlowSegment[] = [
         particleCount: 40,
     },
 
-    // third product
+    // third product, mirroring the second product's flow so it spans the full
+    // column height instead of a thin band
     {
         start: { x: 178.5, y: 113 },
         end: { x: 178.5, y: 100 },
         baseColor: "#969390",
-        anchorIds: ["weitere_3", "weitere_1", "third-product"],
+        anchorIds: ["third-product"],
         sourceWidth: 50,
         targetWidth: 10,
-        particleCount: 64,
+        particleCount: 32,
     },
     {
         start: { x: 178.5, y: 35 },
         end: { x: 178.5, y: 22 },
         baseColor: "#4fb1ce",
-        anchorIds: ["weitere_1", "superset", "third-product"],
+        anchorIds: ["superset", "third-product"],
         sourceWidth: 10,
         targetWidth: 60,
-        particleCount: 64,
+        particleCount: 40,
+    },
+    // we overlay two streams with lower counts to change the shape a bit
+    {
+        start: { x: 178.5, y: 113 },
+        end: { x: 178.5, y: 65 },
+        baseColor: "#969390",
+        anchorIds: ["third-product"],
+        sourceWidth: 50,
+        targetWidth: 20,
+        particleCount: 32,
+    },
+    {
+        start: { x: 178.5, y: 90 },
+        end: { x: 178.5, y: 22 },
+        baseColor: "#4fb1ce",
+        anchorIds: ["superset", "third-product"],
+        sourceWidth: 30,
+        targetWidth: 60,
+        particleCount: 40,
     },
 
     // detailed hovers on content package boxes
@@ -443,6 +451,21 @@ export const flowSegments: FlowSegment[] = [
         },
 ];
 
+// The right-hand column behaves as one hover target: the boxes and the gaps
+// between them keep the group highlighted and show one continuous tooltip.
+// The tooltip switches to the specific box while the pointer is over it.
+export const hoverRegions: CombinedHoverRegionAnchor[] = [
+    {
+        id: "weitere-column",
+        group: "product-3",
+        componentIds: ["weitere_0", "weitere_1", "weitere_2", "weitere_3"],
+        architectureComponentIds: ["third-product"],
+        linkedComponentIds: ["superset"],
+        tooltipHeading: "Weitere Pakete",
+        tooltipText: weiterePaketeTooltip,
+    },
+];
+
 export function mount(target: string | HTMLElement) {
     const wrapper =
         typeof target === "string"
@@ -460,6 +483,7 @@ export function mount(target: string | HTMLElement) {
         products,
         logo,
         flowSegments,
+        hoverRegions,
     ).render();
 }
 
